@@ -6,15 +6,22 @@ CONFIG_DIR="$HOME/.config/dotfiles"
 DOTFILES_DIR="$HOME/.dotfiles"
 SSH_DIR="$HOME/.ssh"
 
+# Install Pip
+if ! [ -x "$(command -v pip3)" ]; then
+  sudo apt install python3-pip -y
+fi
+
 # Install Ansible
 if ! [ -x "$(command -v ansible)" ]; then
-  sudo apt install ansible -y
+  pip3 install ansible
 fi
 
 # Install Git
 if ! [ -x "$(command -v git)" ]; then
   sudo apt install git -y
 fi
+
+
 
 # Generate SSH keys
 if ! [[ -f "$SSH_DIR/authorized_keys" ]]; then
