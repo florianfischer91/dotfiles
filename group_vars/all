@@ -36,6 +36,7 @@ default_roles:
   - notion-app
   - nvm
   - oh-my-tmux
+  - zsh
   - oh-my-zsh
   - open-vm-tools
   - postman
@@ -52,4 +53,3 @@ default_roles:
   - twingate
   - twitch-cli
   - visual-studio-code
-  - zsh
