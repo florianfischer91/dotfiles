@@ -1,7 +1,4 @@
 ---
 - name: Install
-  kewlfft.aur.aur:
-    use: yay
-    state: latest
-    name:
-      - visual-studio-code-bin
+  ansible.builtin.include_role:
+    name: gantsign.visual-studio-code
