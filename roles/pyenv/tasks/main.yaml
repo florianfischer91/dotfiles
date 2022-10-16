@@ -7,6 +7,29 @@
 
 - name: Download, Install, Cleanup
   block:
+    - name: Install python build dependencies
+      ansible.builtin.package:
+        name:
+          - make 
+          - build-essential
+          - libssl-dev
+          - zlib1g-dev
+          - libbz2-dev
+          - libreadline-dev
+          - libsqlite3-dev
+          - wget
+          - curl
+          - llvm
+          - libncursesw5-dev 
+          - xz-utils
+          - tk-dev
+          - libxml2-dev
+          - libxmlsec1-dev
+          - libffi-dev
+          - liblzma-dev
+        state: present
+      become: yes
+
     - name: Download
       ansible.builtin.get_url: 
         url: https://github.com/pyenv/pyenv-installer/raw/master/bin/pyenv-installer
