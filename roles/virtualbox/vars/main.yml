@@ -1,0 +1,10 @@
+---
+# vars file for virtualbox
+
+# Packages to allow apt over https
+ubuntu_prereq_packages:
+  - software-properties-common
+
+# Packages to allow apt over https
+debian_prereq_packages:
+  - software-properties-common

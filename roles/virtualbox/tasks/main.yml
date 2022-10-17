@@ -1,0 +1,16 @@
+---
+# tasks file for virtualbox
+- name: Debug
+  debug: msg={{ansible_distribution_release }}
+
+- include_tasks: install_Ubuntu.yml
+  when: ansible_facts['distribution'] == "Ubuntu"
+  # and ansible_facts['distribution_version'] == "18.04"
+
+# - include_tasks: install_Debian.yml
+#   when: ansible_facts['distribution'] == "Debian" and ansible_facts['distribution_version']|int >= 10
+
+# - include: configure.yml
+
+- include_tasks: extensions.yml
+  when: install_extpacks
