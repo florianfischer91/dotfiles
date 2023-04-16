@@ -27,7 +27,7 @@ source $ZSH/oh-my-zsh.sh
 
 # DEFAULTS
 export ARCHFLAGS="-arch x86_64"
-export EDITOR='nvim'
+export EDITOR='vim'
 
 # PIP
 export PIP_REQUIRE_VIRTUALENV=true
@@ -72,8 +72,10 @@ EOF
 }
 
 # ALIASES
-alias cat='batcat --paging=never --theme="base16"'
-alias ll='n -Hde'
+# alias cat='batcat --paging=never --theme="base16"'
+alias ll='ls -alF'
+alias la='ls -A'
+alias l='ls -CF'
 alias ssh='TERM="xterm-256color" ssh'
 alias rebase='git fetch --all --prune --prune-tags && git rebase'
 alias woof="k9s"
