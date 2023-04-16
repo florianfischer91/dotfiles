@@ -1,0 +1,46 @@
+---
+- name: Install Conda
+  block:
+    - name: Download Miniconda
+      get_url:
+        url: "{{ anaconda_installer_uri }}"
+        dest: /tmp/install-miniconda.sh
+        checksum: "sha256:{{ anaconda_installer_sha256 }}"
+        mode: 0550
+    - name: Create conda folder
+      become: True
+      file:
+        path: "{{ anaconda_home_dir }}"
+        state: directory
+        mode: 755
+        recurse: yes
+    - name: Run the installer
+      become: True
+      shell: /tmp/install-miniconda.sh -b -u -p {{ anaconda_home_dir }}
+    - name: Remove the installer
+      file:
+        state: absent
+        path: /tmp/install-miniconda.sh
+    - name: Add miniconda bin to path
+      lineinfile:
+        dest: "{{ item }}"
+        create: true
+        state: present
+        insertafter: EOF
+        line: 'export PATH={{ anaconda_home_dir }}/bin:$PATH'
+      with_items:
+        - "{{ ansible_user_dir }}/.zsh_public"
+        #- /etc/bash.bashrc.local
+        #- /etc/zsh.zshrc.local
+    - name: conda - read permission for all
+      become: True
+      file:
+        path: "{{ anaconda_home_dir }}"
+        mode: +r
+        recurse: yes
+    - name: conda - execution permission for all
+      become: True
+      file:
+        path: "{{ anaconda_home_dir }}/bin"
+        mode: +x
+        recurse: yes

@@ -37,6 +37,7 @@ default_roles:
   - nvm
   - oh-my-tmux
   - zsh
+  - conda # has to be installed after zsh to edit .zsh_public
   - oh-my-zsh
   - open-vm-tools
   - postman
