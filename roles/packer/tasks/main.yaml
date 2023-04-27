@@ -1,0 +1,25 @@
+---
+- name: Check packer
+  ansible.builtin.command: packer --version
+  ignore_errors: true
+  changed_when: false
+  register: result
+
+- name: Uninstall if version does not match or doesn't exist at all
+  become: true
+  ansible.builtin.file:
+    dest: "{{ packer_bin_path }}/packer"
+    state: absent
+  register: removed
+  when: 
+    - role_packer_version not in result.stdout
+    - result is success
+
+- name: Install
+  become: true
+  ansible.builtin.import_role:
+    name: geerlingguy.packer
+  vars:
+    packer_version: "{{ role_packer_version }}"
+  when:
+    - role_packer_version not in result.stdout
