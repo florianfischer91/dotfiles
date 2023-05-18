@@ -54,3 +54,4 @@ default_roles:
   - twingate
   - twitch-cli
   - visual-studio-code
+  - p10k
