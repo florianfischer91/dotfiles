@@ -20,3 +20,14 @@
   ansible.builtin.template:
     dest: "{{ ansible_user_dir }}/.tmux.conf.local"
     src: ".tmux.conf.local.j2"
+
+- name: Clone TPM
+  ansible.builtin.git:
+    clone: yes
+    depth: 1
+    dest: "{{ ansible_user_dir }}/.tmux/plugins/tpm"
+    repo: https://github.com/tmux-plugins/tpm
+    single_branch: yes
+    update: yes
+    version: master
+  register: clone

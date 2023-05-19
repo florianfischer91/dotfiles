@@ -14,7 +14,8 @@
 # then uncomment the following line to make Meta + arrow keys mapping work
 set -ga terminal-overrides "*:kUP3=\e[1;9A,*:kDN3=\e[1;9B,*:kRIT3=\e[1;9C,*:kLFT3=\e[1;9D"
 set -g default-terminal "screen-256color"
-set-option -ga terminal-overrides ',*:Tc'
+#set-option -ga terminal-overrides ',*:Tc'
+set-option -ga terminal-overrides ',xterm*:Tc'
 
 
 # -- windows & pane creation ---------------------------------------------------
@@ -330,19 +331,19 @@ tmux_conf_copy_to_os_clipboard=false
 #set -g history-limit 10000
 
 # start with mouse mode enabled
-#set -g mouse on
+set -g mouse on
 
 # force Vi mode
 #   really you should export VISUAL or EDITOR environment variable, see manual
 #set -g status-keys vi
 #set -g mode-keys vi
 
-# replace C-b by C-a instead of using both prefixes
+# replace C-b by C-Space instead of using both prefixes
 # set -gu prefix2
 # unbind C-a
-# unbind C-b
-# set -g prefix C-a
-# bind C-a send-prefix
+unbind C-b
+set -g prefix C-Space
+bind C-Space send-prefix
 
 # split panes using | and -
 bind | split-window -h
@@ -353,6 +354,17 @@ unbind %
 # move status line to top
 #set -g status-position top
 
+# List of plugins
+set -g @plugin 'tmux-plugins/tpm'
+set -g @plugin 'tmux-plugins/tmux-sensible'
+set -g @plugin 'christoomey/vim-tmux-navigator'
+set -g @plugin 'dracula/tmux'
+
+set -g @dracula-show-powerline true
+set -g @dracula-plugins "cpu-usage ram-usage"
+set -g @dracula-show-flags true
+set -g @dracula-show-left-icon session
+set -g status-position top
 
 # -- custom variables ----------------------------------------------------------
 # to define a custom #{foo} variable, define a POSIX shell function between the
@@ -378,3 +390,5 @@ unbind %
 # "$@"
 # # /!\ do not remove the previous line
 
+# Initialize TMUX plugin manager (keep this line at the very bottom of tmux.conf)
+run '~/.tmux/plugins/tpm/tpm'
