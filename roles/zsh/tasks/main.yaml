@@ -22,17 +22,3 @@
     dest: "{{ ansible_user_dir }}/.zsh_private"
     src: ".zsh_private.j2"
   no_log: true
-
-- name: Set zprofile
-  ansible.builtin.lineinfile:
-    insertafter: EOF
-    line: |
-      if [ -d /etc/profile.d ]; then
-        for i in /etc/profile.d/*.sh; do
-          if [ -r $i ]; then
-            . $i
-          fi
-        done
-        unset i
-      fi
-    state: present
