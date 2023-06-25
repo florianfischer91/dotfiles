@@ -1,0 +1,11 @@
+---
+
+- name: Update cache:
+  ansible.builtin.apt:
+    update_cache: yes
+
+- name: Configure security
+  become: true
+  ansible.builtin.import_role:
+    name: willshersystems.sshd
+     
