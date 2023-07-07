@@ -1,0 +1,7 @@
+---
+- name: Install
+  ansible.builtin.package:
+    name:
+      - chromium-browser
+    state: latest
+  become: yes
