@@ -15,7 +15,7 @@ fi
 if ! [ -x "$(command -v ansible)" ]; then
   pip3 install ansible
   echo "export PATH=$PATH:$HOME/.local/bin" >> $HOME/.bashrc
-  . $HOME/.bashrc
+  source $HOME/.bashrc
 fi
 
 # Install Git
