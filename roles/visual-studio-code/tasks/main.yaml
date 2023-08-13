@@ -1,4 +1,8 @@
 ---
 - name: Install
+  vars:
+    users:
+      - username: "{{ lookup('env','ANSIBLE_REMOTE_USER') | default(ansible_user, true) }}"
+        visual_studio_code_extensions: "{{ vs_code_extensions }}"
   ansible.builtin.include_role:
     name: gantsign.visual-studio-code
