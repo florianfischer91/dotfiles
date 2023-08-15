@@ -29,3 +29,8 @@
     single_branch: yes
     update: yes
     version: master
+
+- name: Copy p10k configuration
+  ansible.builtin.template:
+    dest: "{{ ansible_user_dir }}/.p10k.zsh"
+    src: .p10k.zsh.j2
