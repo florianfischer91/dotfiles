@@ -1,6 +1,6 @@
 default_roles:
   - bat
-  - conda 
+  - dconf 
   - docker
   - firefox
   - git

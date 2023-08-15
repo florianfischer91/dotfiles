@@ -12,8 +12,6 @@
     - Bold%20Italic.ttf
   register: fonts
 
-- debug: var=fonts
-
 - name: Copy fonts to right place
   copy:
     src: "{{ item.dest }}"
