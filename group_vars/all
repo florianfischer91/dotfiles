@@ -1,6 +1,6 @@
 default_roles:
   - bat
-  - dconf 
+  - dconf
   - docker
   - firefox
   - git
@@ -9,8 +9,6 @@ default_roles:
   - oh-my-tmux
   - zsh
   - oh-my-zsh
-  - pyenv
-  - rust
   - ssh
   - tmux
   - visual-studio-code
