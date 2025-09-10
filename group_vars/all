@@ -3,7 +3,7 @@ default_roles:
   - applications
   - bat
   - btop
-  - cargo
+  - rust
   - chromium
   - configure_desktop
   - docker
