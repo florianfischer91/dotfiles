@@ -2,7 +2,33 @@
 - name: Install
   vars:
     users:
-      - username: "{{ lookup('env','ANSIBLE_REMOTE_USER') | default(ansible_user, true) }}"
+      - username: "{{ lookup('env', 'ANSIBLE_REMOTE_USER') | default(ansible_user, true) }}"
         visual_studio_code_extensions: "{{ vs_code_extensions }}"
+        visual_studio_code_settings: {
+          "editor.fontFamily": "CaskaydiaMono Nerd Font",
+          "editor.tabSize": 2,
+          "security.workspace.trust.untrustedFiles": "open",
+          "editor.minimap.enabled": false,
+          "git.ignoreMissingGitWarning": true,
+          "editor.fontSize": 12,
+          "editor.occurrencesHighlight": "off",
+          "editor.selectionHighlight": false,
+          "editor.suggestOnTriggerCharacters": false,
+          "editor.tabCompletion": "on",
+          "editor.quickSuggestions": {
+            "other": false,
+            "comments": false,
+            "strings": false
+          },
+          "files.trimTrailingWhitespace": true,
+          "git.confirmSync": false,
+          "window.menuBarVisibility": "compact",
+          "git.autofetch": true,
+          "git.openRepositoryInParentFolders": "always",
+          "explorer.confirmDelete": false,
+          "extensions.ignoreRecommendations": true,
+          "workbench.colorTheme": "Tokyo Night",
+          "window.titleBarStyle": "custom"
+        }
   ansible.builtin.include_role:
     name: gantsign.visual-studio-code
