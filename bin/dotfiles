@@ -2,28 +2,29 @@
 set -e
 
 # Paths
-CONFIG_DIR="$HOME/.config/.dotfiles"
+CONFIG_DIR="$HOME/.dotfiles"
 DOTFILES_DIR="$HOME/.config/share/dotfiles"
 SSH_DIR="$HOME/.ssh"
+
+# Branch used when cloning the repository
+BRANCH="${BRANCH:-main}"
 
 # Install pipx
 if ! [ -x "$(command -v pipx)" ]; then
   sudo apt install pipx python3-venv -y --no-install-recommends
 fi
 
+PATH="$PATH:$HOME/.local/bin"
+
 # Install Ansible
 if ! [ -x "$(command -v ansible)" ]; then
   pipx install "ansible-core<2.19" --include-deps
-  echo "export PATH=$PATH:$HOME/.local/bin" >> $HOME/.bashrc
-  source $HOME/.bashrc
 fi
 
 # Install Git
 if ! [ -x "$(command -v git)" ]; then
   sudo apt install git -y --no-install-recommends
 fi
-
-
 
 # Generate SSH keys
 if ! [[ -f "$SSH_DIR/authorized_keys" ]]; then
@@ -38,7 +39,7 @@ fi
 
 # Clone repository
 if ! [[ -d "$DOTFILES_DIR" ]]; then
-  git clone --branch main "https://github.com/florianfischer91/dotfiles.git" "$DOTFILES_DIR"
+  git clone --branch $BRANCH "https://github.com/florianfischer91/dotfiles.git" "$DOTFILES_DIR"
 else
   git -C "$DOTFILES_DIR" pull
 fi
