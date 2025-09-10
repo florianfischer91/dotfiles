@@ -4,6 +4,7 @@
   ansible.builtin.unarchive:
     src: https://github.com/jesseduffield/lazygit/releases/download/v{{ lazygit_version }}/lazygit_{{ lazygit_version }}_linux_x86_64.tar.gz
     dest: /usr/local/bin
+    remote_src: true
     mode: '0755'
 
 - name: Create config directory
