@@ -1,0 +1,19 @@
+---
+- name: Download
+  become: true
+  ansible.builtin.unarchive:
+    src: https://github.com/jesseduffield/lazygit/releases/latest/download/lazygit_{{ lazygit_version }}_Linux_x86_64.tar.gz
+    dest: /usr/local/bin
+    mode: '0755'
+
+- name: Create config directory
+  ansible.builtin.file:
+    path: ~/.config/lazygit
+    state: directory
+    mode: "0755"
+
+- name: Create empty config file
+  ansible.builtin.file:
+    path: ~/.config/lazygit/config.yml
+    state: touch
+    mode: "0644"
