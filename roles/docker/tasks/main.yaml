@@ -11,6 +11,11 @@
           "size": 24
         }
       ]
+      log-driver: json-file
+      log-opts: {
+        "max-size": 10m,
+        "max-file": 5
+      }
       experimental: true
       features:
         buildkit: true
