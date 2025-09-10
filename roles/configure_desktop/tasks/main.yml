@@ -1,0 +1,21 @@
+---
+- name: Set favorite apps
+  ansible.builtin.script:
+    cmd: set-dock.sh
+
+# TODO do we need this?
+# - name: Set framework text scaling
+#   ansible.builtin.script:
+#     cmd: set-framework-text-scaling.sh
+
+- name: Set gnome extensions
+  ansible.builtin.script:
+    cmd: set-gnome-extensions.sh
+
+- name: Set gnome hotkeys
+  ansible.builtin.script:
+    cmd: set-gnome-hotkeys.sh
+
+- name: Set gnome settings
+  ansible.builtin.script:
+    cmd: set-gnome-settings.sh
