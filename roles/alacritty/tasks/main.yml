@@ -1,8 +1,7 @@
 ---
 - name: Install
-  become: true
   ansible.builtin.command:
-    cmd: cargo install alacritty
+    cmd: ~/.cargo/bin/cargo install alacritty
   changed_when: true
 
 - name: Create config directory
