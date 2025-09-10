@@ -1,0 +1,13 @@
+---
+- name: Install terminal packages
+  ansible.builtin.package:
+    name:
+      - fzf
+      - ripgrep
+      - eza
+      - zoxide
+      - plocate
+      - fd-find
+      - tldr
+      - xclip
+  become: true
