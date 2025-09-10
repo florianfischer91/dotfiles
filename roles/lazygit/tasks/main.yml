@@ -2,7 +2,7 @@
 - name: Download
   become: true
   ansible.builtin.unarchive:
-    src: https://github.com/jesseduffield/lazygit/releases/latest/download/lazygit_{{ lazygit_version }}_Linux_x86_64.tar.gz
+    src: https://github.com/jesseduffield/lazygit/releases/download/{{ lazygit_version }}/lazygit_{{ lazygit_version }}_linux_x86_64.tar.gz
     dest: /usr/local/bin
     mode: '0755'
 
