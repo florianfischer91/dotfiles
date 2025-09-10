@@ -1,0 +1,17 @@
+---
+- name: Install
+  ansible.builtin.package:
+    name:
+      - btop
+  become: true
+
+- name: Copy files
+  ansible.builtin.copy:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    mode: "0644"
+  loop:
+    - src: btop.conf
+    - dest: ~/.config/btop/btop.conf
+    - src: btop.theme
+    - dest: ~/.config/btop/themes/btop.theme
