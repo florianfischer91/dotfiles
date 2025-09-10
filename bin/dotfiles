@@ -2,8 +2,8 @@
 set -e
 
 # Paths
-CONFIG_DIR="$HOME/.config/dotfiles"
-DOTFILES_DIR="$HOME/.dotfiles"
+CONFIG_DIR="$HOME/.config/.dotfiles"
+DOTFILES_DIR="$HOME/.config/share/dotfiles"
 SSH_DIR="$HOME/.ssh"
 
 # Install Pip
@@ -13,7 +13,7 @@ fi
 
 # Install Ansible
 if ! [ -x "$(command -v ansible)" ]; then
-  pip3 install ansible
+  pip3 install ansible-core
   echo "export PATH=$PATH:$HOME/.local/bin" >> $HOME/.bashrc
   source $HOME/.bashrc
 fi
