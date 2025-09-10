@@ -1,6 +1,13 @@
 ---
+# workaround because role can't handle the automatically generates vscode.sources and it would conflict with vscode.list
+- name: Check if vscode.sources exists
+  ansible.builtin.stat:
+    path: /etc/apt/sources.list.d/vscode.sources
+  register: vscode_sources
+
 - name: Install
   vars:
+    visual_studio_code_skip_add_repo: "{{ vscode_sources.stat.exists }}"
     users:
       - username: "{{ lookup('env', 'ANSIBLE_REMOTE_USER') | default(ansible_user, true) }}"
         visual_studio_code_extensions: "{{ vs_code_extensions }}"
