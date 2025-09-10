@@ -1,0 +1,20 @@
+---
+- name: Copy *.desktop files
+  ansible.builtin.copy:
+    src: "{{ item }}.desktop.j2"
+    dest: ~/.local/share/applications/{{ item | capitalize }}.desktop
+    mode: "0644"
+  loop:
+    - about
+    - activity
+    - docker
+
+- name: Copy icons
+  ansible.builtin.copy:
+    src: "{{ item }}"
+    dest: "~/.local/share/dotfiles/applications/icons/{{ item }}"
+    mode: "0644"
+  loop:
+    - Activity.png
+    - Debian.png
+    - Docker.png

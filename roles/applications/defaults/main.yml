@@ -1,0 +1,2 @@
+---
+applications_user: "{{ ansible_user }}"
