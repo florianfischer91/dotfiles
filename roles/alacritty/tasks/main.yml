@@ -1,0 +1,58 @@
+---
+- name: Install
+  become: true
+  ansible.builtin.command:
+    cmd: cargo install alacritty
+  changed_when: true
+
+- name: Create config directory
+  ansible.builtin.file:
+    name: ~/.config/alacritty
+    state: directory
+    mode: "0755"
+
+- name: Copy config files
+  ansible.builtin.file:
+    src: "config/{{ item }}"
+    dest: "~/.config/alacritty/{{ item }}"
+  loop:
+    - alacritty.toml
+    - btop.toml
+    - font-size.toml
+    - pane.toml
+    - shared.toml
+
+- name: Copy font file
+  ansible.builtin.file:
+    src: "config/fonts/{{ alacritty_font }}.toml"
+    dest: "~/.config/alacritty/font.toml"
+
+- name: Migrate config format if needed
+  ansible.builtin.shell: |
+    alacritty migrate 2>/dev/null || true
+    alacritty migrate -c ~/.config/alacritty/pane.toml 2>/dev/null || true
+    alacritty migrate -c ~/.config/alacritty/btop.toml 2>/dev/null || true
+  changed_when: false
+
+- name: Make alacritty default terminal emulator
+  become: true
+  community.general.alternatives:
+    name: x-terminal-emulator
+    path: /usr/bin/alacritty
+
+- name: Adding alacritty to nautilus contextual menu requires the python wrapper for the libraries
+  block:
+    - name: Install python3-nautilus
+      become: true
+      ansible.builtin.package:
+        name: python3-nautilus
+    - name: Create extension folder
+      ansible.builtin.file:
+        path: ~/.local/share/nautilus-python/extensions
+        state: directory
+        mode: "0755"
+    - name: Copy extension file
+      ansible.builtin.copy:
+        src: open-alacritty.py
+        dest: ~/.local/share/nautilus-python/extensions/
+        mode: "0644"
