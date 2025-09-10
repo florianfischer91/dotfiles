@@ -1,10 +1,11 @@
 ---
 - name: Set VS Code theme
-  ansible.builtin.script:
-    script: set-vscode-theme
-  environment:
-    VSC_EXTENSION: "{{ theme_vsc_extension }}"
-    VSC_THEME: "{{ theme_vscode }}"
+  changed_when: true
+  ansible.builtin.shell: |
+    if command -v code &>/dev/null; then
+      code --install-extension {{ theme_vsc_extension }} >/dev/null
+      sed -i "s/\"workbench.colorTheme\": \".*\"/\"workbench.colorTheme\": \"{{ theme_vscode }}\"/g" ~/.config/Code/User/settings.json
+    fi
 
 - name: Create background directory
   ansible.builtin.file:
