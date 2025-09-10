@@ -9,6 +9,12 @@
     - activity
     - docker
 
+- name: Create icons folder
+  ansible.builtin.file:
+    path: "~/.local/share/dotfiles/applications/icons"
+    state: directory
+    mode: "0755"
+
 - name: Copy icons
   ansible.builtin.copy:
     src: "{{ item }}"
