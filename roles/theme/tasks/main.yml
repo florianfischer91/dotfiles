@@ -1,0 +1,60 @@
+---
+- name: Set VS Code theme
+  ansible.builtin.script:
+    script: set-vscode-theme
+  environment:
+    VSC_EXTENSION: "{{ theme_vsc_extension }}"
+    VSC_THEME: "{{ theme_vscode }}"
+
+- name: Create background directory
+  ansible.builtin.file:
+    path: "~/.local/share/backgrounds"
+    state: directory
+    mode: "0755"
+
+- name: Copy desktop background
+  ansible.builtin.copy:
+    src: "{{ theme_selected_theme }}/background.jpg"
+    dest: "{{ _theme_background_path }}"
+    mode: "0644"
+
+- name: Set gnome themes
+  changed_when: true
+  ansible.builtin.shell: |
+    #!/bin/bash
+    set -o pipefail
+
+    gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
+    gsettings set org.gnome.desktop.interface cursor-theme 'Yaru'
+    gsettings set org.gnome.desktop.interface gtk-theme "Yaru-{{ theme_color_desktop }}-dark"
+    gsettings set org.gnome.desktop.interface icon-theme "Yaru-{{ theme_color_desktop }}"
+    gsettings set org.gnome.desktop.interface accent-color {{ theme_color_desktop }} 2>/dev/null || true
+
+    gsettings set org.gnome.desktop.background picture-uri {{ _theme_background_path }}
+    gsettings set org.gnome.desktop.background picture-uri-dark {{ _theme_background_path }}
+    gsettings set org.gnome.desktop.background picture-options 'zoom'
+
+- name: Set tophat themes
+  ansible.builtin.command:
+    cmd: gsettings set org.gnome.shell.extensions.tophat meter-fg-color {{ theme_tophat_meter }}
+  changed_when: true
+
+- name: Set btop theme
+  block:
+    - name: Btop | Update theme file
+      ansible.builtin.copy:
+        src: "{{ theme_selected_theme }}/btop.theme"
+        dest: ~/.config/btop/themes/{{ theme_selected_theme }}.theme
+        mode: "0644"
+    - name: Btop | Update config file
+      ansible.builtin.replace:
+        path: ~/.config/btop/btop.conf
+        regexp: '^color_theme = ".*"'
+        replace: 'color_theme = "{{ theme_selected_theme }}"'
+        mode: "0644"
+
+- name: Set alacritty theme
+  ansible.builtin.copy:
+    src: "{{ theme_selected_theme }}/alacritty.toml"
+    dest: "~/.config/alacritty/theme.toml"
+    mode: "0644"
