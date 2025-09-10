@@ -1,6 +1,6 @@
 ---
 - name: Copy *.desktop files
-  ansible.builtin.copy:
+  ansible.builtin.template:
     src: "{{ item }}.desktop.j2"
     dest: ~/.local/share/applications/{{ item | capitalize }}.desktop
     mode: "0644"
