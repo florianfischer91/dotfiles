@@ -1,4 +1,10 @@
 ---
+- name: Create fonts directory
+  ansible.builtin.file:
+    path: ~/.local/share/fonts
+    state: directory
+    mode: "0755"
+
 - name: Install nerd-fonts
   ansible.builtin.unarchive:
     src: https://github.com/ryanoasis/nerd-fonts/releases/latest/download/CascadiaMono.zip
