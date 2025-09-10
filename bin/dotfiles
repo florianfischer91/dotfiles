@@ -6,21 +6,21 @@ CONFIG_DIR="$HOME/.config/.dotfiles"
 DOTFILES_DIR="$HOME/.config/share/dotfiles"
 SSH_DIR="$HOME/.ssh"
 
-# Install Pip
-if ! [ -x "$(command -v pip3)" ]; then
-  sudo apt install python3-pip -y
+# Install pipx
+if ! [ -x "$(command -v pipx)" ]; then
+  sudo apt install pipx python3-venv -y --no-install-recommends
 fi
 
 # Install Ansible
 if ! [ -x "$(command -v ansible)" ]; then
-  pip3 install ansible-core
+  pipx install "ansible-core<2.19" --include-deps
   echo "export PATH=$PATH:$HOME/.local/bin" >> $HOME/.bashrc
   source $HOME/.bashrc
 fi
 
 # Install Git
 if ! [ -x "$(command -v git)" ]; then
-  sudo apt install git -y
+  sudo apt install git -y --no-install-recommends
 fi
 
 
