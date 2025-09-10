@@ -1,0 +1,7 @@
+---
+- name: Download
+  become: true
+  ansible.builtin.unarchive:
+    src: https://github.com/jesseduffield/lazydocker/releases/latest/download/lazydocker_{{ lazydocker_version }}_Linux_x86_64.tar.gz
+    dest: /usr/local/bin
+    mode: '0755'
