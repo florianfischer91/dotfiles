@@ -24,7 +24,6 @@
 - name: Set gnome themes
   changed_when: true
   ansible.builtin.shell: |
-    #!/bin/bash
     set -o pipefail
 
     gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
@@ -36,6 +35,8 @@
     gsettings set org.gnome.desktop.background picture-uri {{ _theme_background_path }}
     gsettings set org.gnome.desktop.background picture-uri-dark {{ _theme_background_path }}
     gsettings set org.gnome.desktop.background picture-options 'zoom'
+  args:
+    executable: /bin/bash
 
 - name: Set tophat themes
   ansible.builtin.command:
