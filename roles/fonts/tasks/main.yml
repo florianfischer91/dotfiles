@@ -19,6 +19,4 @@
     dest: ~/.local/share/fonts
     remote_src: true
     include:
-      - iA-Fonts-master/iA
-      - Writer
-      - Mono/Static/iAWriterMonoS-*.ttf
+      - "iA Writer Mono/Static/iAWriterMonoS-*.ttf"
