@@ -1,4 +1,11 @@
 ---
+- name: Install packages
+  become: true
+  ansible.builtin.package:
+    name:
+      - gnome-tweaks
+      - gnome-sushi # Gives you previews in the file manager when pressing space
+
 - name: Set favorite apps
   ansible.builtin.script:
     cmd: set-dock.sh
