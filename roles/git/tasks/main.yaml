@@ -3,8 +3,7 @@
   ansible.builtin.package:
     name:
       - git
-    state: latest
-  become: yes
+  become: true
 
 - name: Set diff.colorMoved
   community.general.git_config:
@@ -36,6 +35,33 @@
     scope: global
     value: true
 
+- name: Set aliases
+  community.general.git_config:
+    name: "{{ item.name }}"
+    scope: global
+    value: "{{ item.value }}"
+  loop:
+    - name: alias.co
+      value: checkout
+    - name: alias.br
+      value: branch
+    - name: alias.commit
+      value: commit
+    - name: alias.st
+      value: status
+
+- name: Set credential timeout
+  community.general.git_config:
+    name: credential.helper
+    scope: global
+    value: cache --timeout=3600
+
+- name: Set credential helper manager
+  community.general.git_config:
+    name: credential.helper
+    scope: global
+    value: /usr/local/bin/git-credential-manager
+
 - name: Set user.email
   community.general.git_config:
     name: user.email
@@ -50,9 +76,6 @@
     value: "{{ git_user_name }}"
 
 - name: Install git credential manager
-  become: True
+  become: true
   ansible.builtin.apt:
     deb: "{{ git_cred_manager_uri }}"
-
-- name: Reconfigure git credential manager
-  ansible.builtin.command: git-credential-manager configure
