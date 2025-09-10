@@ -4,7 +4,9 @@
   ansible.builtin.shell: |
     if command -v code &>/dev/null; then
       code --install-extension {{ theme_vsc_extension }} >/dev/null
-      sed -i "s/\"workbench.colorTheme\": \".*\"/\"workbench.colorTheme\": \"{{ theme_vscode }}\"/g" ~/.config/Code/User/settings.json
+      if [ -f "~/.config/Code/User/settings.json" ]; then
+        sed -i "s/\"workbench.colorTheme\": \".*\"/\"workbench.colorTheme\": \"{{ theme_vscode }}\"/g" ~/.config/Code/User/settings.json
+      fi
     fi
 
 - name: Create background directory
