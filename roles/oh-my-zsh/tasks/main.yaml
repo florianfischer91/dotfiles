@@ -7,7 +7,7 @@
 - name: Download oh-my-zsh
   get_url:
     dest: /tmp/zsh-install.sh
-    mode: 0755
+    mode: "0755"
     url: https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh
   when: not install.stat.exists
 
