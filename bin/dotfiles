@@ -18,7 +18,7 @@ PATH="$PATH:$HOME/.local/bin"
 
 # Install Ansible
 if ! [ -x "$(command -v ansible)" ]; then
-  pipx install "ansible-core<2.19" --include-deps
+  pipx install "ansible-core<2.19" --include-deps --system-site-packages
 fi
 
 # Install Git
