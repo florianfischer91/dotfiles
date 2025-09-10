@@ -1,11 +1,6 @@
 ---
 - name: Install
-  vars:
-    package:
-      Debian: chromium
-      Ubuntu: chromium-browser
-  ansible.builtin.package:
-    name:
-      - "{{ package['ansible_os_family'] }}"
-    state: latest
-  become: yes
+  ansible.builtin.apt:
+    name: chromium
+    install_recommends: false
+  become: true
