@@ -1,11 +1,20 @@
 default_roles:
+  - alacritty
+  - applications
   - bat
-  - dconf
+  - btop
+  - cargo
+  - chromium
+  - configure_desktop
   - docker
+  - fastfetch
   - firefox
+  - flameshot
+  - fonts
   - git
-  - go
-  - nnn
+  - lazydocker
+  - lazygit
+  - libraries
   - oh-my-tmux
   - zsh
   - oh-my-zsh
@@ -16,7 +25,10 @@ default_roles:
   - packer
   - vim
   - sshd
-  - chromium
+  - ripgrep
+  - terminal
+  - theme
+
 
 vs_code_extensions:
   - redhat.ansible
