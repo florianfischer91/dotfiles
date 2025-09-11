@@ -52,6 +52,7 @@
   become: true
   community.general.alternatives:
     name: x-terminal-emulator
+    link: /usr/bin/x-terminal-emulator
     path: /usr/local/bin/alacritty
 
 - name: Adding alacritty to nautilus contextual menu requires the python wrapper for the libraries
