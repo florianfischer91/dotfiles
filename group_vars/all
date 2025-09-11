@@ -1,35 +1,36 @@
+# !!! order of default-roles matters !!!
 default_roles:
-  - alacritty
-  - applications
+  - terminal
+  - eza
+  - ripgrep
   - bat
   - btop
-  - rust
   - chromium
+  - firefox
+  - fzf
+  - git
+  - ssh
+  - vim
+  - rust
+  - alacritty
+  - applications
   - configure_desktop
   - docker
   - fastfetch
-  - firefox
   - flameshot
   - fonts
-  - fzf
-  - git
   - lazydocker
   - lazygit
   - libraries
+  - tmux
   - oh-my-tmux
   - zsh
   - oh-my-zsh
-  - ssh
-  - tmux
   - visual-studio-code
   - p10k
   - packer
-  - vim
   - sshd
-  - ripgrep
-  - terminal
   - theme
-  - eza
 
 
 vs_code_extensions:

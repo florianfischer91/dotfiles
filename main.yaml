@@ -18,13 +18,14 @@
     # for ansible-core 2.19 this doesn't work anymore....
     - name: Set roles
       ansible.builtin.set_fact:
-        roles_to_run: "{{ ansible_run_tags != ['all'] and ansible_run_tags or default_roles | difference(exclude_roles | default([])) }}"
+        roles_to_run: >-
+          {{ ansible_run_tags != ['all'] and ansible_run_tags or default_roles | community.general.lists_difference(exclude_roles | default([])) }}
       tags:
         - always
 
     - name: Display roles
       ansible.builtin.debug:
-        var: "{{ roles_to_run }}"
+        var: roles_to_run
       tags:
         - always
 
