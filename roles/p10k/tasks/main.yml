@@ -1,34 +1,35 @@
 ---
-- name: Download fonts
-  get_url:
-    url: "{{ base_url }}{{ item }}"
-    dest: "/tmp"
-  vars:
-    base_url: https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20
-  loop:
-    - Regular.ttf
-    - Bold.ttf
-    - Italic.ttf
-    - Bold%20Italic.ttf
-  register: fonts
+# - name: Download fonts
+#   get_url:
+#     url: "{{ base_url }}{{ item }}"
+#     dest: "/tmp"
+#   vars:
+#     base_url: https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20
+#   loop:
+#     - Regular.ttf
+#     - Bold.ttf
+#     - Italic.ttf
+#     - Bold%20Italic.ttf
+#   register: fonts
 
-- name: Copy fonts to right place
-  copy:
-    src: "{{ item.dest }}"
-    dest: "{{ ansible_user_dir }}/.local/share/fonts/"
-  loop: "{{ fonts.results }}"
+# - name: Copy fonts to right place
+#   copy:
+#     src: "{{ item.dest }}"
+#     dest: "{{ ansible_user_dir }}/.local/share/fonts/"
+#   loop: "{{ fonts.results }}"
 
 - name: Clone powerlevel10k
   ansible.builtin.git:
-    clone: yes
+    clone: true
     depth: 1
     dest: "{{ ansible_user_dir }}/.oh-my-zsh/custom/themes/powerlevel10k"
     repo: https://github.com/romkatv/powerlevel10k.git
-    single_branch: yes
-    update: yes
+    single_branch: true
+    update: true
     version: master
 
 - name: Copy p10k configuration
   ansible.builtin.copy:
     dest: "{{ ansible_user_dir }}/.p10k.zsh"
     src: .p10k.zsh
+    mode: "0644"
