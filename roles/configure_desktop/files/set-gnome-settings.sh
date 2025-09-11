@@ -11,3 +11,6 @@ gsettings set org.gnome.desktop.calendar show-weekdate true
 
 # Turn off ambient sensors for setting screen brightness (they rarely work well!)
 gsettings set org.gnome.settings-daemon.plugins.power ambient-enabled false
+
+# Show hidden files in nautilus
+gsettings set org.gtk.gtk4.Settings.FileChooser show-hidden true
