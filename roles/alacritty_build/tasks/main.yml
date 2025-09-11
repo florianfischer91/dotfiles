@@ -1,0 +1,28 @@
+---
+
+- name: Install build dependencies
+  become: true
+  ansible.builtin.apt:
+    name:
+      - cmake
+      - g++
+      - pkg-config
+      - libfontconfig1-dev
+      - libxcb-xfixes0-dev
+      - libxkbcommon-dev
+
+- name: Clone repository
+  ansible.builtin.git:
+    clone: true
+    depth: 1
+    dest: "{{ alacritty_build_build_folder }}"
+    repo: https://github.com/alacritty/alacritty.git
+    single_branch: true
+    update: true
+    version: v{{ alacritty_build_version }}
+
+- name: Build alacritty
+  ansible.builtin.command:
+    cmd: ~/.cargo/bin/cargo build --release
+    chdir: "{{ alacritty_build_build_folder }}"
+  changed_when: true
