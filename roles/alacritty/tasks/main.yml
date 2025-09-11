@@ -5,10 +5,15 @@
     - name: Copy alacritty binary
       become: true
       ansible.builtin.copy:
-        remote_src: true
         src: "{{ alacritty_build_folder }}/target/release/alacritty"
         dest: /usr/local/bin
         mode: "0755"
+    - name: Copy Alacritty icon
+      become: true
+      ansible.builtin.copy:
+        src: "{{ alacritty_build_folder }}/extra/logo/alacritty-term.svg"
+        dest: /usr/share/pixmaps/Alacritty.svg
+        mode: "0644"
     - name: Copy Alacritty.desktop
       become: true
       ansible.builtin.copy:
