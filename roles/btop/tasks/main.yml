@@ -1,9 +1,14 @@
 ---
 - name: Install
   ansible.builtin.package:
-    name:
-      - btop
+    name: btop
   become: true
+
+- name: Create config directories
+  ansible.builtin.file:
+    path: ~/.config/btop/themes
+    state: directory
+    mode: "0755"
 
 - name: Copy files
   ansible.builtin.copy:
@@ -12,6 +17,6 @@
     mode: "0644"
   loop:
     - src: btop.conf
-    - dest: ~/.config/btop/btop.conf
+      dest: ~/.config/btop/btop.conf
     - src: btop.theme
-    - dest: ~/.config/btop/themes/btop.theme
+      dest: ~/.config/btop/themes/btop.theme
