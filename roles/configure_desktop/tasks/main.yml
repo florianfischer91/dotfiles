@@ -28,3 +28,19 @@
 - name: Set gnome settings
   ansible.builtin.script:
     cmd: set-gnome-settings.sh
+
+- name: Remove desktop entry
+  become: true
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: absent
+  loop:
+    - /usr/share/applications/btop.desktop # Remove Btop entry for one that runs in alacritty
+    - /usr/share/applications/org.flameshot.Flameshot.desktop # App doesn't do anything when started from the app grid
+    - /usr/share/applications/display-im6.q16.desktop # Remove the ImageMagick icon
+    - /usr/share/applications/org.gnome.SystemMonitor.desktop # Replacing this with btop
+    # We added our own meant for Alacritty
+    - /usr/local/share/applications/nvim.desktop
+    - /usr/local/share/applications/vim.desktop
+
+# TODO maybe add custom app-fodler structure later
