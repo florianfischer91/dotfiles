@@ -14,7 +14,7 @@ if ! [ -x "$(command -v pipx)" ]; then
   sudo apt install pipx python3-venv -y --no-install-recommends
 fi
 
-PATH="$PATH:$HOME/.local/bin"
+export PATH="$PATH:$HOME/.local/bin"
 
 # Install Ansible
 if ! [ -x "$(command -v ansible)" ]; then
