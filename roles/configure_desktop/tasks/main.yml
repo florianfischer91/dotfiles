@@ -3,6 +3,8 @@
   become: true
   ansible.builtin.package:
     name:
+      - gir1.2-gtop-2.0
+      - gir1.2-clutter-1.0
       - gnome-tweaks
       - gnome-sushi # Gives you previews in the file manager when pressing space
 

@@ -67,6 +67,8 @@ gsettings set org.gnome.shell.extensions.tophat show-cpu true
 gsettings set org.gnome.shell.extensions.tophat show-disk false
 gsettings set org.gnome.shell.extensions.tophat show-mem true
 gsettings set org.gnome.shell.extensions.tophat network-usage-unit bits
+gsettings set org.gnome.shell.extensions.tophat mem-display numeric
+gsettings set org.gnome.shell.extensions.tophat cpu-display numeric
 
 # Configure AlphabeticalAppGrid
 gsettings set org.gnome.shell.extensions.alphabetical-app-grid folder-order-position 'end'
