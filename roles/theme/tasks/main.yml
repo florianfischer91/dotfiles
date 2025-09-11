@@ -4,7 +4,7 @@
   ansible.builtin.shell: |
     if command -v code &>/dev/null; then
       code --install-extension {{ theme_vsc_extension }} >/dev/null
-      if [ -f "~/.config/Code/User/settings.json" ]; then
+      if [ -f "$HOME/.config/Code/User/settings.json" ]; then
         sed -i "s/\"workbench.colorTheme\": \".*\"/\"workbench.colorTheme\": \"{{ theme_vscode }}\"/g" ~/.config/Code/User/settings.json
       fi
     fi
