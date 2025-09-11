@@ -30,6 +30,7 @@ default_roles:
   - p10k
   - packer
   - sshd
+  - ulauncher
   - theme
 
 
