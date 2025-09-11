@@ -13,5 +13,5 @@
 - name: Copy configuration
   ansible.builtin.copy:
     src: fastfetch.jsonc
-    dest: config.jsonc
+    dest: ~/.config/fastfetch/config.jsonc
     mode: "0644"
