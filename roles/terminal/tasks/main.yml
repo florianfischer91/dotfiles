@@ -2,7 +2,6 @@
 - name: Install terminal packages
   ansible.builtin.package:
     name:
-      - fzf
       - zoxide
       - plocate
       - fd-find
