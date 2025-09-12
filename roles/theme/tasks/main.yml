@@ -21,6 +21,12 @@
     dest: "{{ _theme_background_path }}"
     mode: "0644"
 
+- name: Install necessary packages
+  become: true
+  ansible.builtin.apt:
+    name: "{{ theme_packages }}"
+    install_recommends: false
+
 - name: Set gnome themes
   changed_when: true
   ansible.builtin.shell: |

@@ -1,6 +1,7 @@
 ---
 theme_selected_theme: everforest
 
+theme_packages: "{{ theme_lookup[theme_selected_theme].packages }}"
 theme_color_desktop: "{{ theme_lookup[theme_selected_theme].desktop_color }}"
 theme_tophat_meter: "{{ theme_lookup[theme_selected_theme].tophat_meter }}"
 theme_vscode: "{{ theme_lookup[theme_selected_theme].vscode }}"
@@ -13,3 +14,4 @@ theme_lookup:
     tophat_meter: "#78ab50"
     vscode: "Everforest Dark"
     vscode_extension: "sainnhe.everforest"
+    packages: [yaru-theme-icon]
