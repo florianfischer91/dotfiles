@@ -9,12 +9,13 @@ SSH_DIR="$HOME/.ssh"
 # Branch used when cloning the repository
 BRANCH="${BRANCH:-main}"
 
+export PATH="$PATH:$HOME/.local/bin"
+
 # Install pipx
 if ! [ -x "$(command -v pipx)" ]; then
-  sudo apt install pipx python3-venv -y --no-install-recommends
+  sudo apt install python3-pip python3-venv -y --no-install-recommends
+  python3 -m pip install pipx-in-pipx --break-system-package
 fi
-
-export PATH="$PATH:$HOME/.local/bin"
 
 # Install Ansible
 if ! [ -x "$(command -v ansible)" ]; then
