@@ -68,7 +68,7 @@
 - name: Install new extensions
   changed_when: true
   ansible.builtin.command:
-    cmd: "gext install {{ item }}"
+    cmd: "gext install {{ item.ext | default(item) }}"
   when: item.ext | default(item) not in configure_desktop_installed_ext.stdout
   loop: "{{ configure_desktop_extensions }}"
   environment:
