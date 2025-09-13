@@ -1,5 +1,4 @@
-TECHNICALLYNOTACONFIGSOHEREDOCCEDITIS
-import os
+import subprocess
 from urllib.parse import unquote
 from gi.repository import Nautilus, GObject
 from typing import List
@@ -8,8 +7,7 @@ class OpenTerminalExtension(GObject.GObject, Nautilus.MenuProvider):
     def _open_terminal(self, file: Nautilus.FileInfo) -> None:
         filename = unquote(file.get_uri()[7:])
 
-        os.chdir(filename)
-        os.system("alacritty")
+        subprocess.Popen(["alacritty", "-o", "terminal.shell.program=\"zsh\"", "--working-directory", filename])
 
     def menu_activate_cb(
         self,
@@ -61,4 +59,3 @@ class OpenTerminalExtension(GObject.GObject, Nautilus.MenuProvider):
         return [
             item,
         ]
-TECHNICALLYNOTACONFIGSOHEREDOCCEDITIS
