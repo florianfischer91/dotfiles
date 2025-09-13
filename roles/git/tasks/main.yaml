@@ -50,11 +50,12 @@
     - name: alias.st
       value: status
 
-- name: Set credential timeout
-  community.general.git_config:
-    name: credential.helper
-    scope: global
-    value: cache --timeout=3600
+# Not sure what is the best git-credential-maanger or caching the credentials for 1h...
+# - name: Set credential timeout
+#   community.general.git_config:
+#     name: credential.helper
+#     scope: global
+#     value: cache --timeout=3600
 
 - name: Set credential helper manager
   community.general.git_config:
