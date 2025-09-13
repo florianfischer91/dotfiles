@@ -5,12 +5,13 @@ apps=(
 	"chromium.desktop"
 	"Alacritty.desktop"
 	"code.desktop"
-	# "pinta_pinta.desktop"
+	"Neovim.desktop"
+	"vim.desktop"
+	"pinta_pinta.desktop"
 	"Activity.desktop"
 	"Docker.desktop"
-	"org.gnome.Settings.desktop"
 	"org.gnome.Nautilus.desktop"
-	# "localsend_app.desktop"
+	"org.gnome.Settings.desktop"
 )
 
 # Array to hold installed favorite apps

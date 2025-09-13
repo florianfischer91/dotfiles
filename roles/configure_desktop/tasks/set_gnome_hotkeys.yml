@@ -1,0 +1,122 @@
+---
+# Alt+F4 is very cumbersome
+- name: Set close keybinding
+  community.general.dconf:
+    key: "/org/gnome/desktop/wm/keybindings/close"
+    value: "['<Super>w']"
+
+# Make it easy to maximize like you can fill left/right
+- name: Maximize and resize keybindings
+  community.general.dconf:
+    key: "{{ item.key }}"
+    value: "{{ item.value }}"
+  loop:
+    - { key: "/org/gnome/desktop/wm/keybindings/maximize", value: "['<Super>Up']" }
+    - { key: "/org/gnome/desktop/wm/keybindings/begin-resize", value: "['<Super>BackSpace']" }
+
+# For keyboards that only have a start/stop button for music
+- name: Media keys
+  community.general.dconf:
+    key: "{{ item.key }}"
+    value: "{{ item.value }}"
+  loop:
+    - { key: "/org/gnome/settings-daemon/plugins/media-keys/next", value: "['<Shift>AudioPlay']" }
+
+# Full-screen with title/navigation bar
+- name: Toggle fullscreen
+  community.general.dconf:
+    key: "/org/gnome/desktop/wm/keybindings/toggle-fullscreen"
+    value: "['<Shift>F11']"
+
+# Use 6 fixed workspaces instead of dynamic mode
+- name: Workspace settings
+  community.general.dconf:
+    key: "{{ item.key }}"
+    value: "{{ item.value }}"
+  loop:
+    - { key: "/org/gnome/mutter/dynamic-workspaces", value: "false" }
+    - { key: "/org/gnome/desktop/wm/preferences/num-workspaces", value: "6" }
+
+# Use alt for pinned apps
+- name: Application switch keybindings
+  community.general.dconf:
+    key: "/org/gnome/shell/keybindings/{{ item.key }}"
+    value: "{{ item.value }}"
+  loop:
+    - { key: "switch-to-application-1", value: "['<Alt>1']" }
+    - { key: "switch-to-application-2", value: "['<Alt>2']" }
+    - { key: "switch-to-application-3", value: "['<Alt>3']" }
+    - { key: "switch-to-application-4", value: "['<Alt>4']" }
+    - { key: "switch-to-application-5", value: "['<Alt>5']" }
+    - { key: "switch-to-application-6", value: "['<Alt>6']" }
+    - { key: "switch-to-application-7", value: "['<Alt>7']" }
+    - { key: "switch-to-application-8", value: "['<Alt>8']" }
+    - { key: "switch-to-application-9", value: "['<Alt>9']" }
+
+# Use super for workspaces
+- name: Workspace switch keybindings
+  community.general.dconf:
+    key: "/org/gnome/desktop/wm/keybindings/{{ item.key }}"
+    value: "{{ item.value }}"
+  loop:
+    - { key: "switch-to-workspace-1", value: "['<Super>1']" }
+    - { key: "switch-to-workspace-2", value: "['<Super>2']" }
+    - { key: "switch-to-workspace-3", value: "['<Super>3']" }
+    - { key: "switch-to-workspace-4", value: "['<Super>4']" }
+    - { key: "switch-to-workspace-5", value: "['<Super>5']" }
+    - { key: "switch-to-workspace-6", value: "['<Super>6']" }
+
+# Reserve slots for custom keybindings
+- name: Custom keybinding slots
+  community.general.dconf:
+    key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings"
+    value: >-
+      ['/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/',
+      '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/',
+      '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2/',
+      '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom3/',
+      '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom4/',
+      '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom5/',
+      '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom6/']
+
+- name: Set input source
+  community.general.dconf:
+    key: "/org/gnome/desktop/wm/keybindings/switch-input-source"
+    value: "@as []"
+
+- name: Set ulauncher to Super+Space
+  community.general.dconf:
+    key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/{{ item.key }}"
+    value: "{{ item.value }}"
+  loop:
+    - { key: "name", value: "'Ulauncher'" }
+    - { key: "command", value: "'ulauncher-toggle'" }
+    - { key: "bnding", value: "'<Super>space'" }
+
+- name: Set flameshot (with the sh fix for starting under Wayland) on alternate print screen key
+  community.general.dconf:
+    key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/{{ item.key }}"
+    value: "{{ item.value }}"
+  loop:
+    - { key: "name", value: "'Flameshot'" }
+    - { key: "command", value: "'sh -c -- \"flameshot gui\"'" }
+    - { key: "binding", value: "'<Control>Print'" }
+
+
+- name: Start a new alacritty window (rather than just switch to the already open one)
+  community.general.dconf:
+    key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2/{{ item.key }}"
+    value: "{{ item.value }}"
+  loop:
+    - { key: "name", value: "'New Alacritty Window'" }
+    - { key: "command", value: "'alacritty'" }
+    - { key: "binding", value: "'<Shift><Alt>2'" }
+
+- name: Start a new Chrome window (rather than just switch to the already open one)
+  community.general.dconf:
+    key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom3/{{ item.key }}"
+    value: "{{ item.value }}"
+  loop:
+    - { key: "name", value: "'New Chrome Window'" }
+    - { key: "command", value: "'google-chrome --new-window'" }
+    - { key: "binding", value: "'<Shift><Alt>1'" }

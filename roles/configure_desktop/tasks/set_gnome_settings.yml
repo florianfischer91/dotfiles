@@ -1,0 +1,25 @@
+---
+- name: Center new windows in the middle of the screen
+  community.general.dconf:
+    key: "/org/gnome/mutter/center-new-windows"
+    value: "true"
+
+- name: Set JetBrainsMono as the default monospace font
+  community.general.dconf:
+    key: "/org/gnome/desktop/interface/monospace-font-name"
+    value: "'JetBrainsMono Nerd Font 10'"
+
+- name: Reveal week numbers in the Gnome calendar
+  community.general.dconf:
+    key: "/org/gnome/desktop/calendar/show-weekdate"
+    value: "true"
+
+- name: Turn off ambient sensors for setting screen brightness (they rarely work well!)
+  community.general.dconf:
+    key: "/org/gnome/settings-daemon/plugins/power/ambient-enabled"
+    value: "false"
+
+- name: Show hidden files in nautilus
+  community.general.dconf:
+    key: "/org/gtk/gtk4/Settings/FileChooser/show-hidden"
+    value: "true"

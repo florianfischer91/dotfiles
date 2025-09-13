@@ -1,0 +1,26 @@
+---
+configure_desktop_favorite_apps: [
+  "chromium.desktop",
+  "google-chrome.desktop",
+  "Alacritty.desktop",
+  "code.desktop",
+  "Neovim.desktop",
+  "vim.desktop",
+  "pinta_pinta.desktop",
+  "Activity.desktop",
+  "Docker.desktop",
+  "org.gnome.Nautilus.desktop",
+  "org.gnome.Settings.desktop",
+]
+
+configure_desktop_extensions: [
+  "tactile@lundal.io",
+  {"ext": "just-perfection-desktop@just-perfection", "schema": "just-perfection" },
+  "blur-my-shell@aunetx",
+  "space-bar@luchrioh",
+  {"ext": "undecorate@sun.wxg@gmail.com", "schema": null },
+  "tophat@fflewddur.github.io",
+  "AlphabeticalAppGrid@stuarthayhurst",
+]
+
+configure_desktop_pipx_executable: "~/.local/bin/pipx"
