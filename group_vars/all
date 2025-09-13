@@ -14,7 +14,6 @@ default_roles:
   - rust
   - alacritty
   - applications
-  - configure_desktop
   - docker
   - fastfetch
   - flameshot
@@ -31,6 +30,7 @@ default_roles:
   - packer
   - sshd
   - ulauncher
+  - configure_desktop
   - theme
 
 
