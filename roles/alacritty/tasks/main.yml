@@ -32,7 +32,7 @@
   ansible.builtin.copy:
     src: "config/{{ item }}"
     dest: "~/.config/alacritty/{{ item }}"
-    mode: "0644"
+    mode: "0600"
   loop:
     - alacritty.toml
     - btop.toml
@@ -44,7 +44,7 @@
   ansible.builtin.copy:
     src: "config/fonts/{{ alacritty_font }}.toml"
     dest: "~/.config/alacritty/font.toml"
-    mode: "0644"
+    mode: "0600"
 
 - name: Migrate config format if needed
   ansible.builtin.shell: |
