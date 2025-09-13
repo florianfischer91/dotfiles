@@ -20,6 +20,7 @@ fi
 # Install Ansible
 if ! [ -x "$(command -v ansible)" ]; then
   pipx install "ansible-core<2.19" --include-deps --system-site-packages
+  pipx inject ansible-core psutil # required by community.general.dconf
 fi
 
 # Install Git
