@@ -18,3 +18,5 @@
     path: ~/.config/lazygit/config.yml
     state: touch
     mode: "0644"
+    access_time: preserve
+    modification_time: preserve
