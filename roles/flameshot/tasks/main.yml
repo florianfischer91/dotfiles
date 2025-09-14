@@ -1,5 +1,5 @@
 ---
 - name: Install
   become: true
-  ansible.builtin.package:
-    name: gnome-tweaks
+  ansible.builtin.apt:
+    deb: https://github.com/flameshot-org/flameshot/releases/download/v{{ flameshot_version }}/flameshot-{{ flameshot_version }}-1.debian-12.amd64.deb
