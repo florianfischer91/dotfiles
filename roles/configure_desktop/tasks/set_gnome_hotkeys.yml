@@ -91,7 +91,7 @@
   loop:
     - { key: "name", value: "'Ulauncher'" }
     - { key: "command", value: "'ulauncher-toggle'" }
-    - { key: "bnding", value: "'<Super>space'" }
+    - { key: "binding", value: "'<Super>space'" }
 
 - name: Set flameshot (with the sh fix for starting under Wayland) on alternate print screen key
   community.general.dconf:
@@ -102,6 +102,15 @@
     - { key: "command", value: "'sh -c -- \"flameshot gui\"'" }
     - { key: "binding", value: "'<Control>Print'" }
 
+- name: Start a new VS Code window (rather than just switch to the already open one)
+  community.general.dconf:
+    key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom4/{{ item.key }}"
+    value: "{{ item.value }}"
+  loop:
+    - { key: "name", value: "'New VS Code Window'" }
+    - { key: "command", value: "'code --new-window'" }
+    - { key: "binding", value: "'<Shift><Alt>3'" }
+
 
 - name: Start a new alacritty window (rather than just switch to the already open one)
   community.general.dconf:
@@ -109,7 +118,7 @@
     value: "{{ item.value }}"
   loop:
     - { key: "name", value: "'New Alacritty Window'" }
-    - { key: "command", value: "'alacritty'" }
+    - { key: "command", value: "'alacritty -e zsh'" }
     - { key: "binding", value: "'<Shift><Alt>2'" }
 
 - name: Start a new Chrome window (rather than just switch to the already open one)
@@ -118,5 +127,5 @@
     value: "{{ item.value }}"
   loop:
     - { key: "name", value: "'New Chrome Window'" }
-    - { key: "command", value: "'google-chrome --new-window'" }
+    - { key: "command", value: "'chromium --new-window'" }
     - { key: "binding", value: "'<Shift><Alt>1'" }
