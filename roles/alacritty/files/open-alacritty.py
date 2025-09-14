@@ -7,7 +7,7 @@ class OpenTerminalExtension(GObject.GObject, Nautilus.MenuProvider):
     def _open_terminal(self, file: Nautilus.FileInfo) -> None:
         filename = unquote(file.get_uri()[7:])
 
-        subprocess.Popen(["alacritty", "-o", "terminal.shell.program=\"zsh\"", "--working-directory", filename])
+        subprocess.Popen(["alacritty", "--working-directory", filename, "-e", "zsh"])
 
     def menu_activate_cb(
         self,
