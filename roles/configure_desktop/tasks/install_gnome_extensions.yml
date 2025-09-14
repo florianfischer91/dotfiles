@@ -1,0 +1,166 @@
+---
+- name: Create favorites list
+  changed_when: false
+  ansible.builtin.shell:
+    executable: /bin/bash
+    cmd: |
+      # Favorite apps for dock
+      apps=(
+        {% for app in configure_desktop_favorite_apps %}
+        {{ app }}
+        {% endfor %}
+      )
+
+      # Array to hold installed favorite apps
+      installed_apps=()
+
+      # Directory where .desktop files are typically stored
+      desktop_dirs=(
+        "/var/lib/flatpak/exports/share/applications"
+        "/usr/share/applications"
+        "/usr/local/share/applications"
+        "$HOME/.local/share/applications"
+      )
+
+      # Check if a .desktop file exists for each app
+      for app in "${apps[@]}"; do
+        for dir in "${desktop_dirs[@]}"; do
+          if [ -f "$dir/$app" ]; then
+            installed_apps+=("$app")
+            break
+          fi
+        done
+      done
+
+      # Convert the array to a format suitable for gsettings
+      favorites_list=$(printf "'%s'," "${installed_apps[@]}")
+      favorites_list="[${favorites_list%,}]"
+      echo "$favorites_list"
+  register: configure_desktop_actual_favorites_list
+
+- name: Set the favorite apps
+  community.general.dconf:
+    key: "/org/gnome/shell/favorite-apps"
+    value: "{{ configure_desktop_actual_favorites_list.stdout }}"
+
+- name: Install gnome-shell-extension-manager
+  become: true
+  ansible.builtin.apt:
+    name: gnome-shell-extension-manager
+    install_recommends: false
+
+- name: Install gnome-extensions-cli
+  community.general.pipx:
+    name: gnome-extensions-cli
+    system_site_packages: true
+    executable: "{{ configure_desktop_pipx_executable }}"
+  environment:
+    PATH: "{{ ansible_env.HOME }}/.local/bin:$PATH"
+
+- name: Get installed extensions
+  changed_when: false
+  ansible.builtin.command:
+    cmd: gext list --only-uuid
+  register: configure_desktop_installed_ext
+  environment:
+    PATH: "{{ ansible_env.HOME }}/.local/bin:$PATH"
+
+- name: Install new extensions
+  changed_when: true
+  ansible.builtin.command:
+    cmd: "gext install {{ item.ext | default(item) }}"
+  when: item.ext | default(item) not in configure_desktop_installed_ext.stdout
+  loop: "{{ configure_desktop_extensions }}"
+  environment:
+    PATH: "{{ ansible_env.HOME }}/.local/bin:$PATH"
+
+- name: Copy gsettings schemas
+  become: true
+  vars:
+    schema: "{{ item.schema if 'schema' in item else (item | split('@') | first) }}"
+  ansible.builtin.copy:
+    src: "{{ ansible_env.HOME }}/.local/share/gnome-shell/extensions/{{ item.ext | default(item) }}\
+      /schemas/org.gnome.shell.extensions.{{ schema }}.gschema.xml"
+    dest: /usr/share/glib-2.0/schemas/
+    mode: "0644"
+    remote_src: true
+  loop: "{{ configure_desktop_extensions }}"
+  when: item.schema | default("") != None
+  register: _configure_desktop_copy_schemas_result
+
+- name: Compile gsettings schemas in order to be able to set them # noqa: no-handler
+  when: _configure_desktop_copy_schemas_result.changed
+  changed_when: true
+  become: true
+  ansible.builtin.command:
+    cmd: glib-compile-schemas /usr/share/glib-2.0/schemas/
+
+- name: Configure Tactile
+  community.general.dconf:
+    key: "/org/gnome/shell/extensions/tactile/{{ item.key }}"
+    value: "{{ item.value }}"
+  loop:
+    - { "key": "col-0", "value": 1 }
+    - { "key": "col-1", "value": 2 }
+    - { "key": "col-2", "value": 1 }
+    - { "key": "col-3", "value": 0 }
+    - { "key": "row-0", "value": 1 }
+    - { "key": "row-1", "value": 1 }
+    - { "key": "gap-size", "value": 32 }
+
+- name: Configure Just Perfection
+  community.general.dconf:
+    key: "/org/gnome/shell/extensions/just-perfection/{{ item.key }}"
+    value: "{{ item.value }}"
+  loop:
+    - { "key": "animation", "value": 2 }
+    - { "key": "dash-app-running", "value": true }
+    - { "key": "workspace", "value": true }
+    - { "key": "workspace-popup", "value": false }
+
+- name: Configure Blur My Shell
+  community.general.dconf:
+    key: "/org/gnome/shell/extensions/blur-my-shell/{{ item.key }}"
+    value: "{{ item.value }}"
+  loop:
+    - { "key": "appfolder/blur", "value": false }
+    - { "key": "lockscreen/blur", "value": false }
+    - { "key": "screenshot/blur", "value": false }
+    - { "key": "window-list/blur", "value": false }
+    - { "key": "panel/blur", "value": false }
+    - { "key": "overview/blur", "value": true }
+    - { "key": "dash-to-dock/blur", "value": true }
+    - { "key": "dash-to-dock/brightness", "value": 0.6 }
+    - { "key": "dash-to-dock/sigma", "value": 30 }
+    - { "key": "dash-to-dock/static-blur", "value": true }
+    - { "key": "dash-to-dock/style-dash-to-dock", "value": 0 }
+
+- name: Configure Space Bar
+  community.general.dconf:
+    key: "/org/gnome/shell/extensions/space-bar/{{ item.key }}"
+    value: "{{ item.value }}"
+  loop:
+    - {"key": "behavior/smart-workspace-names", "value": false }
+    - {"key": "shortcuts/enable-activate-workspace-shortcuts", "value": false }
+    - {"key": "shortcuts/enable-move-to-workspace-shortcuts", "value": true }
+    - {"key": "shortcuts/open-menu", "value": "@as []" }
+
+- name: Configure TopHat
+  community.general.dconf:
+    key: "/org/gnome/shell/extensions/tophat/{{ item.key }}"
+    value: "{{ item.value }}"
+  loop:
+    - { "key": "show-icons", "value": true }
+    - { "key": "show-cpu", "value": true }
+    - { "key": "show-disk", "value": false }
+    - { "key": "show-mem", "value": true }
+    - { "key": "network-usage-unit", "value": "'bits'" }
+    - { "key": "mem-display", "value": "'numeric'" }
+    - { "key": "cpu-display", "value": "'numeric'" }
+
+- name: Configure AlphabeticalAppGrid
+  community.general.dconf:
+    key: "/org/gnome/shell/extensions/alphabetical-app-grid/{{ item.key }}"
+    value: "{{ item.value }}"
+  loop:
+    - { "key": "folder-order-position", "value": "'end'" }

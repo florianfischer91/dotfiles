@@ -1,24 +1,27 @@
 ---
 - name: Install
-  ansible.builtin.package:
-    name:
-      - zsh
-    state: latest
-  become: yes
+  ansible.builtin.apt:
+    name: zsh
+    install_recommends: false
+  become: true
 
 - name: Set default
-  user:
-    name: "{{ ansible_env['USER'] }}"
+  ansible.builtin.user:
+    name: "{{ ansible_env.USER }}"
     shell: /usr/bin/zsh
-  become: yes
+  become: true
 
 - name: Set public
   ansible.builtin.template:
-    dest: "{{ ansible_user_dir }}/.zsh_public"
+    dest: "{{ ansible_env.HOME }}/.zsh_public"
     src: ".zsh_public.j2"
+    mode: "0644"
+  when: zsh_public is defined
 
 - name: Set private
   ansible.builtin.template:
-    dest: "{{ ansible_user_dir }}/.zsh_private"
+    dest: "{{ ansible_env.HOME }}/.zsh_private"
     src: ".zsh_private.j2"
+    mode: "0600"
+  when: zsh_private is defined
   no_log: true

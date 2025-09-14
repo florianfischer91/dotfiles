@@ -1,0 +1,9 @@
+---
+- name: Install further libraries
+  ansible.builtin.package:
+    name:
+      - libssl-dev
+      - imagemagick
+      - mupdf
+      - mupdf-tools
+  become: true

@@ -1,0 +1,95 @@
+---
+- name: Set VS Code theme
+  block:
+    - name: Check if code is installed
+      changed_when: false
+      ansible.builtin.shell:
+        cmd: command -v code &>/dev/null
+      register: _theme_code_installed
+
+    - name: Check installed extensions
+      changed_when: false
+      when: _theme_code_installed.rc == 0
+      ansible.builtin.command:
+        cmd: code --list-extensions
+      register: _theme_code_extensions_installed
+
+    - name: Install code theme extensions
+      changed_when: true
+      when:
+        - _theme_code_installed.rc == 0
+        - theme_vsc_extension not in _theme_code_extensions_installed.stdout
+      ansible.builtin.command:
+        cmd: code --install-extension {{ theme_vsc_extension }}
+
+    - name: Check VS Code settings.json file
+      ansible.builtin.stat:
+        path: "{{ ansible_env.HOME }}/.config/Code/User/settings.json"
+      register: _theme_code_settings_file
+
+    - name: Change VS Code color theme
+      when:
+        - _theme_code_installed.rc == 0
+        - _theme_code_settings_file.stat.exists
+      ansible.builtin.replace:
+        path: "{{ _theme_code_settings_file.stat.path }}"
+        regexp: '"workbench.colorTheme": ".*"'
+        replace: '"workbench.colorTheme": "{{ theme_vscode }}"'
+        mode: "0644"
+
+- name: Create background directory
+  ansible.builtin.file:
+    path: "{{ ansible_env.HOME }}/.local/share/backgrounds"
+    state: directory
+    mode: "0755"
+
+- name: Copy desktop background
+  ansible.builtin.copy:
+    src: "{{ theme_selected_theme }}/background.jpg"
+    dest: "{{ _theme_background_path }}"
+    mode: "0644"
+
+- name: Install necessary packages
+  become: true
+  ansible.builtin.apt:
+    name: "{{ theme_packages }}"
+    install_recommends: false
+
+- name: Set gnome theme
+  community.general.dconf:
+    key: "{{ item.key }}"
+    value: "{{ item.value }}"
+  loop:
+    - { key: "/org/gnome/desktop/interface/color-scheme", value: "'prefer-dark'"}
+    - { key: "/org/gnome/desktop/interface/cursor-theme", value: "'Yaru'"}
+    - { key: "/org/gnome/desktop/interface/gtk-theme", value: "'Yaru-{{ theme_color_desktop }}-dark'"}
+    - { key: "/org/gnome/desktop/interface/icon-theme", value: "'Yaru-{{ theme_color_desktop }}'"}
+    - { key: "/org/gnome/desktop/interface/accent-color", value: "'{{ theme_color_desktop }}'"}
+    - { key: "/org/gnome/desktop/background/picture-uri", value: "'{{ _theme_background_path }}'"}
+    - { key: "/org/gnome/desktop/background/picture-uri-dark", value: "'{{ _theme_background_path }}'"}
+    - { key: "/org/gnome/desktop/background/picture-options", value: "'zoom'"}
+
+- name: Set tophat themes
+  community.general.dconf:
+    key: "/org/gnome/shell/extensions/tophat/meter-fg-color"
+    value: "'{{ theme_tophat_meter }}'"
+
+- name: Set btop theme
+  block:
+    - name: Btop | Update theme file
+      ansible.builtin.copy:
+        src: "{{ theme_selected_theme }}/btop.theme"
+        dest: "{{ ansible_env.HOME }}/.config/btop/themes/{{ theme_selected_theme }}.theme"
+        mode: "0644"
+    - name: Btop | Update config file
+      ansible.builtin.replace:
+        path: "{{ ansible_env.HOME }}/.config/btop/btop.conf"
+        regexp: '^color_theme = ".*"'
+        replace: 'color_theme = "{{ theme_selected_theme }}"'
+        mode: "0644"
+
+- name: Set alacritty theme
+  ansible.builtin.copy:
+    src: "{{ theme_selected_theme }}/alacritty.toml"
+    dest: "{{ ansible_env.HOME }}/.config/alacritty/theme.toml"
+    mode: "0600"

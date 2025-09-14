@@ -1,0 +1,78 @@
+---
+- name: Install alacritty from build folder
+  block:
+    # TODO ensure build folder exists
+    - name: Copy alacritty binary
+      become: true
+      ansible.builtin.copy:
+        src: "{{ alacritty_build_folder }}/target/release/alacritty"
+        dest: /usr/local/bin
+        mode: "0755"
+    - name: Copy Alacritty icon
+      become: true
+      ansible.builtin.copy:
+        src: "{{ alacritty_build_folder }}/extra/logo/alacritty-term.svg"
+        dest: /usr/share/pixmaps/Alacritty.svg
+        mode: "0644"
+    - name: Copy Alacritty.desktop
+      become: true
+      ansible.builtin.copy:
+        src: "{{ alacritty_build_folder }}/extra/linux/Alacritty.desktop"
+        dest: /usr/share/applications/
+        mode: "0644"
+
+
+- name: Create config directory
+  ansible.builtin.file:
+    name: "{{ ansible_env.HOME }}/.config/alacritty"
+    state: directory
+    mode: "0755"
+
+- name: Copy config files
+  ansible.builtin.copy:
+    src: "config/{{ item }}"
+    dest: "{{ ansible_env.HOME }}/.config/alacritty/{{ item }}"
+    mode: "0600"
+  loop:
+    - alacritty.toml
+    - btop.toml
+    - font-size.toml
+    - pane.toml
+    - shared.toml
+
+- name: Copy font file
+  ansible.builtin.copy:
+    src: "config/fonts/{{ alacritty_font }}.toml"
+    dest: "{{ ansible_env.HOME }}/.config/alacritty/font.toml"
+    mode: "0600"
+
+- name: Migrate config format if needed
+  ansible.builtin.shell: |
+    alacritty migrate 2>/dev/null || true
+    alacritty migrate -c {{ ansible_env.HOME }}/.config/alacritty/pane.toml 2>/dev/null || true
+    alacritty migrate -c {{ ansible_env.HOME }}/.config/alacritty/btop.toml 2>/dev/null || true
+  changed_when: false
+
+- name: Make alacritty default terminal emulator
+  become: true
+  community.general.alternatives:
+    name: x-terminal-emulator
+    link: /usr/bin/x-terminal-emulator
+    path: /usr/local/bin/alacritty
+
+- name: Adding alacritty to nautilus contextual menu requires the python wrapper for the libraries
+  block:
+    - name: Install python3-nautilus
+      become: true
+      ansible.builtin.package:
+        name: python3-nautilus
+    - name: Create extension folder
+      ansible.builtin.file:
+        path: "{{ ansible_env.HOME }}/.local/share/nautilus-python/extensions"
+        state: directory
+        mode: "0755"
+    - name: Copy extension file
+      ansible.builtin.copy:
+        src: open-alacritty.py
+        dest: "{{ ansible_env.HOME }}/.local/share/nautilus-python/extensions/"
+        mode: "0644"

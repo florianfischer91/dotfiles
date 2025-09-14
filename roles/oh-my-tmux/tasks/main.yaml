@@ -1,33 +1,34 @@
 ---
 - name: Clone
   ansible.builtin.git:
-    clone: yes
+    clone: true
     depth: 1
-    dest: "{{ ansible_user_dir }}/.tmux"
+    dest: "{{ oh_my_tmux_config_dir }}"
     repo: https://github.com/gpakosz/.tmux.git
-    single_branch: yes
-    update: yes
+    single_branch: true
+    update: true
     version: master
   register: clone
 
 - name: Link .tmux.conf
   ansible.builtin.file:
-    src: "{{ ansible_user_dir }}/.tmux/.tmux.conf"
-    dest: "{{ ansible_user_dir }}/.tmux.conf"
+    src: "{{ oh_my_tmux_config_dir }}/.tmux.conf"
+    dest: "{{ oh_my_tmux_config_dir }}/tmux.conf"
     state: link
 
 - name: Copy .tmux.conf.local
   ansible.builtin.template:
-    dest: "{{ ansible_user_dir }}/.tmux.conf.local"
-    src: ".tmux.conf.local.j2"
+    dest: "{{ oh_my_tmux_config_dir }}/tmux.conf.local"
+    src: "tmux.conf.local.j2"
+    mode: "0644"
 
 - name: Clone TPM
   ansible.builtin.git:
-    clone: yes
+    clone: true
     depth: 1
-    dest: "{{ ansible_user_dir }}/.tmux/plugins/tpm"
+    dest: "{{ oh_my_tmux_config_dir }}/plugins/tpm"
     repo: https://github.com/tmux-plugins/tpm
-    single_branch: yes
-    update: yes
+    single_branch: true
+    update: true
     version: master
   register: clone

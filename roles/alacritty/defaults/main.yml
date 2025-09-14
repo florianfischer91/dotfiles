@@ -1,0 +1,3 @@
+---
+alacritty_font: JetBrainsMono
+alacritty_build_folder: "{{ ansible_env.HOME }}/alacritty"

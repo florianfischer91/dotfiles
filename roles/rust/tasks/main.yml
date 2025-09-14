@@ -1,0 +1,5 @@
+---
+- name: Download and Install # noqa: command-instead-of-module risky-shell-pipe
+  ansible.builtin.shell:
+    cmd: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+  changed_when: true

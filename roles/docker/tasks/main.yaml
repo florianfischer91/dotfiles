@@ -5,12 +5,18 @@
     name: geerlingguy.docker
   vars:
     docker_daemon_options:
+      data-root: "/mnt/docker-data"
       default-address-pools: [
         {
           "base": "172.18.0.0/16",
           "size": 24
         }
       ]
+      log-driver: json-file
+      log-opts: {
+        "max-size": 10m,
+        "max-file": "5"
+      }
       experimental: true
       features:
         buildkit: true

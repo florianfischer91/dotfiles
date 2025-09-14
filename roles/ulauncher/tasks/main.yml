@@ -1,0 +1,30 @@
+---
+- name: Install
+  become: true
+  ansible.builtin.apt:
+    deb: https://github.com/Ulauncher/Ulauncher/releases/download/{{ ulauncher_version }}/ulauncher_{{ ulauncher_version }}_all.deb
+
+- name: Create autostart folder
+  ansible.builtin.file:
+    path: "{{ ansible_env.HOME }}/.config/autostart"
+    state: directory
+    mode: "0755"
+
+- name: Create desktop file
+  ansible.builtin.template:
+    src: ulauncher.desktop.j2
+    dest: "{{ ansible_env.HOME }}/.config/autostart/ulauncher.desktop"
+    mode: "0644"
+
+- name: Start ulauncher to have it populate config before we overwrite
+  ansible.builtin.shell:
+    cmd: |
+      gtk-launch ulauncher.desktop >/dev/null 2>&1
+      sleep 2 # ensure enough time for ulauncher to set defaults
+    creates: "{{ ansible_env.HOME }}/.config/ulauncher/settings.json"
+
+- name: Copy configuration file
+  ansible.builtin.copy:
+    src: ulauncher.json
+    dest: "{{ ansible_env.HOME }}/.config/ulauncher/settings.json"
+    mode: "0644"

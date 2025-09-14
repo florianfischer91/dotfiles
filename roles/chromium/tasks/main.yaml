@@ -1,7 +1,6 @@
 ---
 - name: Install
-  ansible.builtin.package:
-    name:
-      - chromium-browser
-    state: latest
-  become: yes
+  ansible.builtin.apt:
+    name: chromium
+    install_recommends: false
+  become: true

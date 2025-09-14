@@ -1,24 +1,38 @@
+# !!! order of default-roles matters !!!
 default_roles:
+  - terminal
+  - eza
+  - ripgrep
   - bat
-  - dconf 
-  - docker
+  - btop
+  - chromium
   - firefox
+  - fzf
   - git
-  - go
-  - nnn
+  - ssh
+  - vim
+  - rust
+  - alacritty
+  - applications
+  - docker
+  - fastfetch
+  - flameshot
+  - fonts
+  - lazydocker
+  - lazygit
+  - libraries
+  - tmux
   - oh-my-tmux
   - zsh
   - oh-my-zsh
-  - pyenv
-  - rust
-  - ssh
-  - tmux
   - visual-studio-code
   - p10k
   - packer
-  - vim
   - sshd
-  - chromium
+  - ulauncher
+  - configure_desktop
+  - theme
+
 
 vs_code_extensions:
   - redhat.ansible
