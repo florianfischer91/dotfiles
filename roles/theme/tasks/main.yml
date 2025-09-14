@@ -92,4 +92,4 @@
   ansible.builtin.copy:
     src: "{{ theme_selected_theme }}/alacritty.toml"
     dest: "{{ ansible_env.HOME }}/.config/alacritty/theme.toml"
-    mode: "0644"
+    mode: "0600"
