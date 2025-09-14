@@ -9,7 +9,7 @@
   vars:
     visual_studio_code_skip_add_repo: "{{ vscode_sources.stat.exists }}"
     users:
-      - username: "{{ lookup('env', 'ANSIBLE_REMOTE_USER') | default(ansible_user, true) }}"
+      - username: "{{ lookup('env', 'ANSIBLE_REMOTE_USER') | default(ansible_env.USER, true) }}"
         visual_studio_code_extensions: "{{ vs_code_extensions }}"
         visual_studio_code_settings: {
           "editor.fontFamily": "CaskaydiaMono Nerd Font",

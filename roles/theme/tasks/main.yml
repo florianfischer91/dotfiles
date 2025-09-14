@@ -24,7 +24,7 @@
 
     - name: Check VS Code settings.json file
       ansible.builtin.stat:
-        path: "/home/{{ ansible_env.USER }}/.config/Code/User/settings.json"
+        path: "{{ ansible_env.HOME }}/.config/Code/User/settings.json"
       register: _theme_code_settings_file
 
     - name: Change VS Code color theme
@@ -39,7 +39,7 @@
 
 - name: Create background directory
   ansible.builtin.file:
-    path: "~/.local/share/backgrounds"
+    path: "{{ ansible_env.HOME }}/.local/share/backgrounds"
     state: directory
     mode: "0755"
 
@@ -79,11 +79,11 @@
     - name: Btop | Update theme file
       ansible.builtin.copy:
         src: "{{ theme_selected_theme }}/btop.theme"
-        dest: ~/.config/btop/themes/{{ theme_selected_theme }}.theme
+        dest: "{{ ansible_env.HOME }}/.config/btop/themes/{{ theme_selected_theme }}.theme"
         mode: "0644"
     - name: Btop | Update config file
       ansible.builtin.replace:
-        path: ~/.config/btop/btop.conf
+        path: "{{ ansible_env.HOME }}/.config/btop/btop.conf"
         regexp: '^color_theme = ".*"'
         replace: 'color_theme = "{{ theme_selected_theme }}"'
         mode: "0644"
@@ -91,5 +91,5 @@
 - name: Set alacritty theme
   ansible.builtin.copy:
     src: "{{ theme_selected_theme }}/alacritty.toml"
-    dest: "~/.config/alacritty/theme.toml"
+    dest: "{{ ansible_env.HOME }}/.config/alacritty/theme.toml"
     mode: "0644"

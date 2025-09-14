@@ -1,14 +1,14 @@
 ---
 - name: Create fonts directory
   ansible.builtin.file:
-    path: ~/.local/share/fonts
+    path: "{{ ansible_env.HOME }}/.local/share/fonts"
     state: directory
     mode: "0755"
 
 - name: Install nerd-fonts (JetBrains)
   ansible.builtin.unarchive:
     src: https://github.com/ryanoasis/nerd-fonts/releases/latest/download/JetBrainsMono.zip
-    dest: ~/.local/share/fonts
+    dest: "{{ ansible_env.HOME }}/.local/share/fonts"
     remote_src: true
     include:
       - "*.ttf"
@@ -17,7 +17,7 @@
 - name: Install iA-Fonts
   ansible.builtin.unarchive:
     src: https://github.com/iaolo/iA-Fonts/archive/refs/heads/master.zip
-    dest: ~/.local/share/fonts
+    dest: "{{ ansible_env.HOME }}/.local/share/fonts"
     remote_src: true
     include:
       - "iA-Fonts-master/iA\ Writer\ Mono/Static/iAWriterMonoS-*.ttf"

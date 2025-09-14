@@ -24,14 +24,14 @@
 
 - name: Create config directory
   ansible.builtin.file:
-    name: ~/.config/alacritty
+    name: "{{ ansible_env.HOME }}/.config/alacritty"
     state: directory
     mode: "0755"
 
 - name: Copy config files
   ansible.builtin.copy:
     src: "config/{{ item }}"
-    dest: "~/.config/alacritty/{{ item }}"
+    dest: "{{ ansible_env.HOME }}/.config/alacritty/{{ item }}"
     mode: "0600"
   loop:
     - alacritty.toml
@@ -43,14 +43,14 @@
 - name: Copy font file
   ansible.builtin.copy:
     src: "config/fonts/{{ alacritty_font }}.toml"
-    dest: "~/.config/alacritty/font.toml"
+    dest: "{{ ansible_env.HOME }}/.config/alacritty/font.toml"
     mode: "0600"
 
 - name: Migrate config format if needed
   ansible.builtin.shell: |
     alacritty migrate 2>/dev/null || true
-    alacritty migrate -c ~/.config/alacritty/pane.toml 2>/dev/null || true
-    alacritty migrate -c ~/.config/alacritty/btop.toml 2>/dev/null || true
+    alacritty migrate -c {{ ansible_env.HOME }}/.config/alacritty/pane.toml 2>/dev/null || true
+    alacritty migrate -c {{ ansible_env.HOME }}/.config/alacritty/btop.toml 2>/dev/null || true
   changed_when: false
 
 - name: Make alacritty default terminal emulator
@@ -68,11 +68,11 @@
         name: python3-nautilus
     - name: Create extension folder
       ansible.builtin.file:
-        path: ~/.local/share/nautilus-python/extensions
+        path: "{{ ansible_env.HOME }}/.local/share/nautilus-python/extensions"
         state: directory
         mode: "0755"
     - name: Copy extension file
       ansible.builtin.copy:
         src: open-alacritty.py
-        dest: ~/.local/share/nautilus-python/extensions/
+        dest: "{{ ansible_env.HOME }}/.local/share/nautilus-python/extensions/"
         mode: "0644"

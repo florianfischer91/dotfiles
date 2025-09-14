@@ -23,4 +23,4 @@ configure_desktop_extensions: [
   "AlphabeticalAppGrid@stuarthayhurst",
 ]
 
-configure_desktop_pipx_executable: "~/.local/bin/pipx"
+configure_desktop_pipx_executable: "{{ ansible_env.HOME }}/.local/bin/pipx"

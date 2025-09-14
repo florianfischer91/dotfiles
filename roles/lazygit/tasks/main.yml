@@ -9,13 +9,13 @@
 
 - name: Create config directory
   ansible.builtin.file:
-    path: ~/.config/lazygit
+    path: "{{ ansible_env.HOME }}/.config/lazygit"
     state: directory
     mode: "0755"
 
 - name: Create empty config file
   ansible.builtin.file:
-    path: ~/.config/lazygit/config.yml
+    path: "{{ ansible_env.HOME }}/.config/lazygit/config.yml"
     state: touch
     mode: "0644"
     access_time: preserve

@@ -6,7 +6,7 @@ theme_color_desktop: "{{ theme_lookup[theme_selected_theme].desktop_color }}"
 theme_tophat_meter: "{{ theme_lookup[theme_selected_theme].tophat_meter }}"
 theme_vscode: "{{ theme_lookup[theme_selected_theme].vscode }}"
 theme_vsc_extension: "{{ theme_lookup[theme_selected_theme].vscode_extension }}"
-_theme_background_path: "/home/{{ ansible_env.USER }}/.local/share/backgrounds/{{ theme_selected_theme }}-background.jpg"
+_theme_background_path: "{{ ansible_env.HOME }}/.local/share/backgrounds/{{ theme_selected_theme }}-background.jpg"
 
 theme_lookup:
   everforest:

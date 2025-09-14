@@ -55,7 +55,7 @@
     system_site_packages: true
     executable: "{{ configure_desktop_pipx_executable }}"
   environment:
-    PATH: "/home/{{ ansible_env.USER }}/.local/bin:$PATH"
+    PATH: "{{ ansible_env.HOME }}/.local/bin:$PATH"
 
 - name: Get installed extensions
   changed_when: false
@@ -63,7 +63,7 @@
     cmd: gext list --only-uuid
   register: configure_desktop_installed_ext
   environment:
-    PATH: "/home/{{ ansible_env.USER }}/.local/bin:$PATH"
+    PATH: "{{ ansible_env.HOME }}/.local/bin:$PATH"
 
 - name: Install new extensions
   changed_when: true
@@ -72,14 +72,14 @@
   when: item.ext | default(item) not in configure_desktop_installed_ext.stdout
   loop: "{{ configure_desktop_extensions }}"
   environment:
-    PATH: "/home/{{ ansible_env.USER }}/.local/bin:$PATH"
+    PATH: "{{ ansible_env.HOME }}/.local/bin:$PATH"
 
 - name: Copy gsettings schemas
   become: true
   vars:
     schema: "{{ item.schema if 'schema' in item else (item | split('@') | first) }}"
   ansible.builtin.copy:
-    src: "/home/{{ ansible_env.USER }}/.local/share/gnome-shell/extensions/{{ item.ext | default(item) }}\
+    src: "{{ ansible_env.HOME }}/.local/share/gnome-shell/extensions/{{ item.ext | default(item) }}\
       /schemas/org.gnome.shell.extensions.{{ schema }}.gschema.xml"
     dest: /usr/share/glib-2.0/schemas/
     mode: "0644"

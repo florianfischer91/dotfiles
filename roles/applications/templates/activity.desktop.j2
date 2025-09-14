@@ -2,9 +2,9 @@
 Version=1.0
 Name=Activity
 Comment=System activity from btop
-Exec=alacritty --config-file /home/{{ applications_user }}/.config/alacritty/btop.toml --class=Activity --title=Activity -e btop
+Exec=alacritty --config-file {{ ansible_env.HOME }}/.config/alacritty/btop.toml --class=Activity --title=Activity -e btop
 Terminal=false
 Type=Application
-Icon=/home/{{ applications_user }}/.local/share/dotfiles/applications/icons/Activity.png
+Icon={{ ansible_env.HOME }}/.local/share/icons/Activity.png
 Categories=GTK;
 StartupNotify=false

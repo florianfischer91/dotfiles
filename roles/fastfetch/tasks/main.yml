@@ -6,12 +6,12 @@
 
 - name: Create config directory
   ansible.builtin.file:
-    name: ~/.config/fastfetch
+    name: "{{ ansible_env.HOME }}/.config/fastfetch"
     state: directory
     mode: "0755"
 
 - name: Copy configuration
   ansible.builtin.copy:
     src: fastfetch.jsonc
-    dest: ~/.config/fastfetch/config.jsonc
+    dest: "{{ ansible_env.HOME }}/.config/fastfetch/config.jsonc"
     mode: "0644"

@@ -23,6 +23,6 @@
 
 - name: Build alacritty
   ansible.builtin.command:
-    cmd: ~/.cargo/bin/cargo build --release
+    cmd: "{{ ansible_env.HOME }}/.cargo/bin/cargo build --release"
     chdir: "{{ alacritty_build_build_folder }}"
   changed_when: true

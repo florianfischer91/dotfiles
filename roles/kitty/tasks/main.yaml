@@ -9,17 +9,17 @@
 - name: Config folder
   ansible.builtin.file:
     mode: "0755"
-    path: "{{ ansible_user_dir }}/.config/kitty"
+    path: "{{ ansible_env.HOME }}/.config/kitty"
     state: directory
 
 - name: Configuration
   ansible.builtin.template:
-    dest: "{{ ansible_user_dir }}/.config/kitty/kitty.conf"
+    dest: "{{ ansible_env.HOME }}/.config/kitty/kitty.conf"
     src: "kitty.conf.j2"
 
 - name: Themes
   copy:
-    dest: "{{ ansible_user_dir }}/.config/kitty"
+    dest: "{{ ansible_env.HOME }}/.config/kitty"
     src: "{{ kitty_config_item }}"
   loop_control:
     loop_var: kitty_config_item

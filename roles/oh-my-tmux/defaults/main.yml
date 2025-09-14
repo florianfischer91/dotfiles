@@ -1,2 +1,2 @@
 ---
-oh_my_tmux_config_dir: "{{ ansible_user_dir }}/.config/tmux"
+oh_my_tmux_config_dir: "{{ ansible_env.HOME }}/.config/tmux"
