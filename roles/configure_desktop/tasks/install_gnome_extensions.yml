@@ -55,24 +55,24 @@
     system_site_packages: true
     executable: "{{ configure_desktop_pipx_executable }}"
   environment:
-    PATH: "{{ ansible_env.HOME }}/.local/bin:$PATH"
+    PATH: "{{ ansible_env.HOME }}/.local/bin:{{ ansible_env.PATH }}"
 
 - name: Get installed extensions
   changed_when: false
   ansible.builtin.command:
-    cmd: gext list --only-uuid
+    cmd: gext --filesystem list --only-uuid
   register: configure_desktop_installed_ext
   environment:
-    PATH: "{{ ansible_env.HOME }}/.local/bin:$PATH"
+    PATH: "{{ ansible_env.HOME }}/.local/bin:{{ ansible_env.PATH }}"
 
 - name: Install new extensions
   changed_when: true
   ansible.builtin.command:
-    cmd: "gext install {{ item.ext | default(item) }}"
+    cmd: "gext --filesystem install {{ item.ext | default(item) }}"
   when: item.ext | default(item) not in configure_desktop_installed_ext.stdout
   loop: "{{ configure_desktop_extensions }}"
   environment:
-    PATH: "{{ ansible_env.HOME }}/.local/bin:$PATH"
+    PATH: "{{ ansible_env.HOME }}/.local/bin:{{ ansible_env.PATH }}"
 
 - name: Copy gsettings schemas
   become: true
