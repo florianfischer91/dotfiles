@@ -76,17 +76,18 @@
 
 - name: Set btop theme
   block:
-    - name: Btop | Update theme file
+    - name: Btop | Copy theme file
       ansible.builtin.copy:
         src: "{{ theme_selected_theme }}/btop.theme"
         dest: "{{ ansible_env.HOME }}/.config/btop/themes/{{ theme_selected_theme }}.theme"
         mode: "0644"
-    - name: Btop | Update config file
-      ansible.builtin.replace:
-        path: "{{ ansible_env.HOME }}/.config/btop/btop.conf"
-        regexp: '^color_theme = ".*"'
-        replace: 'color_theme = "{{ theme_selected_theme }}"'
-        mode: "0644"
+
+    - name: Btop | Symlink theme file
+      ansible.builtin.file:
+        src: "{{ ansible_env.HOME }}/.config/btop/themes/{{ theme_selected_theme }}.theme"
+        dest: "{{ ansible_env.HOME }}/.config/btop/themes/current.theme"
+        force: true
+        state: link
 
 - name: Set alacritty theme
   ansible.builtin.copy:
