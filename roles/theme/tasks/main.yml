@@ -94,3 +94,16 @@
     src: "{{ theme_selected_theme }}/alacritty.toml"
     dest: "{{ ansible_env.HOME }}/.config/alacritty/theme.toml"
     mode: "0600"
+
+- name: Check if neovim is installed
+  changed_when: false
+  ansible.builtin.shell:
+    cmd: command -v nvim &>/dev/null
+  register: _theme_nvim_installed
+
+- name: Set neovim theme
+  ansible.builtin.copy:
+    src: "{{ theme_selected_theme }}/neovim.lua"
+    dest: "{{ ansible_env.HOME }}/.config/nvim/lua/plugins/theme.lua"
+    mode: "0644"
+  when: _theme_nvim_installed.rc == 0

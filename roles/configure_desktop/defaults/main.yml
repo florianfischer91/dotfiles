@@ -5,7 +5,7 @@ configure_desktop_favorite_apps: [
   "Alacritty.desktop",
   "code.desktop",
   "Neovim.desktop",
-  "vim.desktop",
+  # "vim.desktop",
   "pinta_pinta.desktop",
   "Activity.desktop",
   "Docker.desktop",
