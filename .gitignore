@@ -1,5 +1,4 @@
 values.yaml
 vault-password.txt
-./applications
 ansible_roles
 ansible_collections
