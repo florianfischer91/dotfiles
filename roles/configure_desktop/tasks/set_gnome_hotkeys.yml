@@ -22,6 +22,11 @@
   loop:
     - { key: "/org/gnome/settings-daemon/plugins/media-keys/next", value: "['<Shift>AudioPlay']" }
 
+- name: Open File Manager (Nautilus) with Super+f (for File)
+  community.general.dconf:
+    key: "/org/gnome/settings-daemon/plugins/media-keys/home"
+    value: "['<Super>f']"
+
 # Full-screen with title/navigation bar
 - name: Toggle fullscreen
   community.general.dconf:
