@@ -416,6 +416,10 @@ bind m run "cut -c3- '#{TMUX_CONF}' | sh -s _toggle_mouse" \; display 'mouse #{?
 # move status line to top
 #set -g status-position top
 
+# set zsh as default shell
+{% if oh_my_tmux_set_default_shell %}
+set-option -g default-shell /bin/zsh
+{% endif %}
 
 # -- tpm -----------------------------------------------------------------------
 
