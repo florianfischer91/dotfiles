@@ -1,20 +1,20 @@
 ---
 - name: Set VS Code theme
   block:
-    - name: Check if code is installed
+    - name: VS Code | Check if it is installed
       changed_when: false
       ansible.builtin.shell:
         cmd: command -v code &>/dev/null
       register: _theme_code_installed
 
-    - name: Check installed extensions
+    - name: VS Code | Check installed extensions
       changed_when: false
       when: _theme_code_installed.rc == 0
       ansible.builtin.command:
         cmd: code --list-extensions
       register: _theme_code_extensions_installed
 
-    - name: Install code theme extensions
+    - name: VS Code | Install theme extensions
       changed_when: true
       when:
         - _theme_code_installed.rc == 0
@@ -22,12 +22,12 @@
       ansible.builtin.command:
         cmd: code --install-extension {{ theme_vsc_extension }}
 
-    - name: Check VS Code settings.json file
+    - name: VS Code | Check existence of settings.json
       ansible.builtin.stat:
         path: "{{ ansible_env.HOME }}/.config/Code/User/settings.json"
       register: _theme_code_settings_file
 
-    - name: Change VS Code color theme
+    - name: VS Code | Change color theme (settings.json exists)
       when:
         - _theme_code_installed.rc == 0
         - _theme_code_settings_file.stat.exists
@@ -35,6 +35,19 @@
         path: "{{ _theme_code_settings_file.stat.path }}"
         regexp: '"workbench.colorTheme": ".*"'
         replace: '"workbench.colorTheme": "{{ theme_vscode }}"'
+        mode: "0644"
+
+    - name: VS Code | Change color theme (settings.json doesn't exist)
+      when:
+        - _theme_code_installed.rc == 0
+        - not _theme_code_settings_file.stat.exists
+      vars:
+        theme_config:
+          workbench.colorTheme: "{{ theme_vscode }}"
+      ansible.builtin.copy:
+        dest: "{{ ansible_env.HOME }}/.config/Code/User/settings.json"
+        content: |
+          {{ theme_config | to_json(indent=4) }}
         mode: "0644"
 
 - name: Create background directory
