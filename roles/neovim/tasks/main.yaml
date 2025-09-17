@@ -26,11 +26,23 @@
     name: luarocks
     install_recommends: false
 
+- name: Delete existing config
+  when: neovim_delete_existing_config | bool
+  ansible.builtin.file:
+    path: "{{ neovim_config_folder }}"
+    state: absent
+
+- name: Check if starter config already exists
+  ansible.builtin.stat:
+    path: "{{ neovim_config_folder }}"
+  register: _neovim_starter_config
+
 - name: Clone lazyvim
+  when: not _neovim_starter_config.stat.exists
   ansible.builtin.git:
     clone: true
     depth: 1
-    dest: "{{ ansible_env.HOME }}/.config/nvim"
+    dest: "{{ neovim_config_folder }}"
     repo: https://github.com/LazyVim/starter
     single_branch: true
     update: true
@@ -38,32 +50,32 @@
 
 - name: Create plugin-after directory
   ansible.builtin.file:
-    path: "{{ ansible_env.HOME }}/.config/nvim/plugin/after"
+    path: "{{ neovim_config_folder }}/plugin/after"
     state: directory
     mode: "0755"
 
 - name: Make everything match the terminal transparency
   ansible.builtin.copy:
     src: transparency.lua
-    dest: "{{ ansible_env.HOME }}/.config/nvim/plugin/after/"
+    dest: "{{ neovim_config_folder }}/plugin/after/"
     mode: "0644"
 
 - name: Turn off animated scrolling
   ansible.builtin.copy:
     src: snacks-animated-scrolling-off.lua
-    dest: "{{ ansible_env.HOME }}/.config/nvim/lua/plugins/"
+    dest: "{{ neovim_config_folder }}/lua/plugins/"
     mode: "0644"
 
 - name: Turn off relative line numbers
   ansible.builtin.lineinfile:
-    path: "{{ ansible_env.HOME }}/.config/nvim/lua/config/options.lua"
+    path: "{{ neovim_config_folder }}/lua/config/options.lua"
     search_string: vim.opt.relativenumber = false
     line: vim.opt.relativenumber = false
 
 - name: Ensure editor.neo-tree is used by default
   ansible.builtin.copy:
     src: lazyvim.json
-    dest: "{{ ansible_env.HOME }}/.config/nvim/"
+    dest: "{{ neovim_config_folder }}/"
     mode: "0644"
 
 - name: Create desktop launcher file
