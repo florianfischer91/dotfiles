@@ -46,12 +46,12 @@ theme_lookup:
     vscode: "Nord"
     vscode_extension: "arcticicestudio.nord-visual-studio-code"
     packages: [yaru-theme-icon]
-  osaka-jade:
+  forest:
     desktop_color: sage
     desktop_icons: sage
     tophat_meter: "#214237"
-    vscode: "Monokai"
-    vscode_extension: "vira.vsc-vira-theme"
+    vscode: "Dark Green Jungle"
+    vscode_extension: "moondevaa.darkgreenjungle"
     packages: [yaru-theme-icon]
   ristretto:
     desktop_color: yellow
