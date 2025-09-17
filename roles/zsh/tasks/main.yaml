@@ -5,11 +5,13 @@
     install_recommends: false
   become: true
 
+# if the user is not in /etc/passwd, this will fail
 - name: Set default
   ansible.builtin.user:
     name: "{{ ansible_env.USER }}"
     shell: /usr/bin/zsh
   become: true
+  when: zsh_set_default_shell | bool
 
 - name: Set public
   ansible.builtin.template:

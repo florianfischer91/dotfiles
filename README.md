@@ -64,20 +64,22 @@ cd $HOME && mkdir -p .config/dotfiles && vim .config/dotfiles/values.yaml
 
 Below is a list of all available values. Not all are required but incorrect values will break the playbook if not properly set.
 
-| Name                  | Type                                | Required |
-| --------------------- | ----------------------------------- | -------- |
-| git_user_email        | string                              | yes      |
-| git_user_name         | string                              | yes      |
-| exclude_roles         | array `(see group_vars/all)`        | no       |
-| kubectl_config        | dict `(see Kubernetes below)`       | no       |
-| kubectl_config_active | string `(see Kubernetes below)`     | no       |
-| neovim_version        | string `(branch, tag or SHA)`       | no       |
-| nitrogen_background   | string `(see roles/nitrogen/files)` | no       |
-| nodejs_npmrc_config   | string `(see NodeJS below)`         | no       |
-| ssh_key               | dict `(see SSH Keys below)`         | no       |
-| system_host           | dict `(see System Hosts below)`     | no       |
-| zsh_public            | dict `(see Environment below)`      | no       |
-| zsh_private           | dict `(see Environment below)`      | no       |
+| Name                         | Type                                | Required |
+| ---------------------------- | ----------------------------------- | -------- |
+| git_user_email               | string                              | yes      |
+| git_user_name                | string                              | yes      |
+| exclude_roles                | array `(see group_vars/all)`        | no       |
+| kubectl_config               | dict `(see Kubernetes below)`       | no       |
+| kubectl_config_active        | string `(see Kubernetes below)`     | no       |
+| neovim_version               | string `(branch, tag or SHA)`       | no       |
+| nitrogen_background          | string `(see roles/nitrogen/files)` | no       |
+| nodejs_npmrc_config          | string `(see NodeJS below)`         | no       |
+| ssh_key                      | dict `(see SSH Keys below)`         | no       |
+| system_host                  | dict `(see System Hosts below)`     | no       |
+| zsh_public                   | dict `(see Environment below)`      | no       |
+| zsh_private                  | dict `(see Environment below)`      | no       |
+| zsh_set_default_shell        | bool                                | no       |
+| oh_my_tmux_set_default_shell | bool                                | no       |
 
 #### Environment
 
@@ -282,16 +284,16 @@ This repository is continuously updated with new features and settings which bec
 To update your environment run the `dotfiles` command in your shell:
 
 ```bash
-$ dotfiles
+$ dotfiles -K
 ```
 
 This will handle the following tasks:
 
 - Verify Ansible is up-to-date
 - Generate SSH keys and add to `~/.ssh/authorized_keys`
-- Clone this repository locally to `~/.dotfiles`
+- Clone this repository locally to `~/.config/share/dotfiles`
 - Verify any `ansible-galaxy` plugins are updated
-- Run this playbook with the values in `~/.config/dotfiles/values.yaml`
+- Run this playbook with the values in `~/.dotfiles/values.yaml`
 
 ## Known Issues
 

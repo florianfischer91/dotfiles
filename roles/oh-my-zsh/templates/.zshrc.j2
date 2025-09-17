@@ -1,6 +1,3 @@
-
-. "$HOME/.cargo/env"
-
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:$HOME/.local/bin:/usr/local/bin:$PATH
 
@@ -86,6 +83,7 @@ n() { if [ "$#" -eq 0 ]; then nvim .; else nvim "$@"; fi; }
 alias g='git'
 alias d='docker'
 alias bat='batcat'
+alias cat='batcat --paging=never --theme="base16"'
 alias lzg='lazygit'
 alias lzd='lazydocker'
 

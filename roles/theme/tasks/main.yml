@@ -1,20 +1,20 @@
 ---
 - name: Set VS Code theme
   block:
-    - name: Check if code is installed
+    - name: VS Code | Check if it is installed
       changed_when: false
       ansible.builtin.shell:
         cmd: command -v code &>/dev/null
       register: _theme_code_installed
 
-    - name: Check installed extensions
+    - name: VS Code | Check installed extensions
       changed_when: false
       when: _theme_code_installed.rc == 0
       ansible.builtin.command:
         cmd: code --list-extensions
       register: _theme_code_extensions_installed
 
-    - name: Install code theme extensions
+    - name: VS Code | Install theme extensions
       changed_when: true
       when:
         - _theme_code_installed.rc == 0
@@ -22,12 +22,12 @@
       ansible.builtin.command:
         cmd: code --install-extension {{ theme_vsc_extension }}
 
-    - name: Check VS Code settings.json file
+    - name: VS Code | Check existence of settings.json
       ansible.builtin.stat:
         path: "{{ ansible_env.HOME }}/.config/Code/User/settings.json"
       register: _theme_code_settings_file
 
-    - name: Change VS Code color theme
+    - name: VS Code | Change color theme (settings.json exists)
       when:
         - _theme_code_installed.rc == 0
         - _theme_code_settings_file.stat.exists
@@ -35,6 +35,19 @@
         path: "{{ _theme_code_settings_file.stat.path }}"
         regexp: '"workbench.colorTheme": ".*"'
         replace: '"workbench.colorTheme": "{{ theme_vscode }}"'
+        mode: "0644"
+
+    - name: VS Code | Change color theme (settings.json doesn't exist)
+      when:
+        - _theme_code_installed.rc == 0
+        - not _theme_code_settings_file.stat.exists
+      vars:
+        theme_config:
+          workbench.colorTheme: "{{ theme_vscode }}"
+      ansible.builtin.copy:
+        dest: "{{ ansible_env.HOME }}/.config/Code/User/settings.json"
+        content: |
+          {{ theme_config | to_json(indent=4) }}
         mode: "0644"
 
 - name: Create background directory
@@ -60,10 +73,10 @@
     key: "{{ item.key }}"
     value: "{{ item.value }}"
   loop:
-    - { key: "/org/gnome/desktop/interface/color-scheme", value: "'prefer-dark'"}
+    - { key: "/org/gnome/desktop/interface/color-scheme", value: "'prefer-{{ theme_light_mode }}'"}
     - { key: "/org/gnome/desktop/interface/cursor-theme", value: "'Yaru'"}
-    - { key: "/org/gnome/desktop/interface/gtk-theme", value: "'Yaru-{{ theme_color_desktop }}-dark'"}
-    - { key: "/org/gnome/desktop/interface/icon-theme", value: "'Yaru-{{ theme_color_desktop }}'"}
+    - { key: "/org/gnome/desktop/interface/gtk-theme", value: "'Yaru-{{ theme_color_desktop }}-{{ theme_light_mode }}'"}
+    - { key: "/org/gnome/desktop/interface/icon-theme", value: "'Yaru-{{ theme_icons_desktop }}'"}
     - { key: "/org/gnome/desktop/interface/accent-color", value: "'{{ theme_color_desktop }}'"}
     - { key: "/org/gnome/desktop/background/picture-uri", value: "'{{ _theme_background_path }}'"}
     - { key: "/org/gnome/desktop/background/picture-uri-dark", value: "'{{ _theme_background_path }}'"}
@@ -76,20 +89,34 @@
 
 - name: Set btop theme
   block:
-    - name: Btop | Update theme file
+    - name: Btop | Copy theme file
       ansible.builtin.copy:
         src: "{{ theme_selected_theme }}/btop.theme"
         dest: "{{ ansible_env.HOME }}/.config/btop/themes/{{ theme_selected_theme }}.theme"
         mode: "0644"
-    - name: Btop | Update config file
-      ansible.builtin.replace:
-        path: "{{ ansible_env.HOME }}/.config/btop/btop.conf"
-        regexp: '^color_theme = ".*"'
-        replace: 'color_theme = "{{ theme_selected_theme }}"'
-        mode: "0644"
+
+    - name: Btop | Symlink theme file
+      ansible.builtin.file:
+        src: "{{ ansible_env.HOME }}/.config/btop/themes/{{ theme_selected_theme }}.theme"
+        dest: "{{ ansible_env.HOME }}/.config/btop/themes/current.theme"
+        force: true
+        state: link
 
 - name: Set alacritty theme
   ansible.builtin.copy:
     src: "{{ theme_selected_theme }}/alacritty.toml"
     dest: "{{ ansible_env.HOME }}/.config/alacritty/theme.toml"
     mode: "0600"
+
+- name: Check if neovim is installed
+  changed_when: false
+  ansible.builtin.shell:
+    cmd: command -v nvim &>/dev/null
+  register: _theme_nvim_installed
+
+- name: Set neovim theme
+  ansible.builtin.copy:
+    src: "{{ theme_selected_theme }}/neovim.lua"
+    dest: "{{ ansible_env.HOME }}/.config/nvim/lua/plugins/theme.lua"
+    mode: "0644"
+  when: _theme_nvim_installed.rc == 0

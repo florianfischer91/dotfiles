@@ -3,13 +3,12 @@
   hosts: localhost
   connection: local
 
-  tasks:
-    - name: Assert required variable definition
-      ansible.builtin.assert:
-        that:
-          - git_user_name is defined and git_user_name != ""
-          - git_user_email is defined and git_user_email != ""
+  environment:
+    https_proxy: "{{ lookup('ansible.builtin.env', 'https_proxy') }}"
+    http_proxy: "{{ lookup('ansible.builtin.env', 'http_proxy') }}"
+    no_proxy: "{{ lookup('ansible.builtin.env', 'no_proxy') }}"
 
+  tasks:
     - name: Check version
       ansible.builtin.script:
         cmd: check-version.sh
@@ -28,6 +27,13 @@
         var: roles_to_run
       tags:
         - always
+
+    - name: Assert required variable definition
+      ansible.builtin.assert:
+        that:
+          - git_user_name is defined and git_user_name != ""
+          - git_user_email is defined and git_user_email != ""
+      when: "'git' in roles_to_run"
 
     - name: Run roles
       ansible.builtin.include_role:

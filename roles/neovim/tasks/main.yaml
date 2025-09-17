@@ -1,28 +1,85 @@
 ---
-- name: Add neovim ppa
-  apt_repository:
-    repo: ppa:neovim-ppa/stable
-    state: present
-  become: yes
+- name: Download and install neovim
+  become: true
+  ansible.builtin.unarchive:
+    src: https://github.com/neovim/neovim/releases/download/v{{ neovim_version }}/nvim-linux-x86_64.tar.gz
+    dest: /usr/local/
+    remote_src: true
+    extra_opts:
+      - --strip-components=1
+      - --show-stored-names # can be captured by ansible to ensure idempotency
+    mode: '0755'
 
-- name: Install neovim from ppa
-  apt:
-    name: neovim
-    state: latest
-  become: yes
+- name: Download and install tree-sitter # noqa: command-instead-of-module
+  become: true
+  ansible.builtin.shell:
+    cmd: |
+      curl -OL https://github.com/tree-sitter/tree-sitter/releases/download/v{{ neovim_tree_sitter_version }}/tree-sitter-linux-x64.gz
+      gunzip tree-sitter-linux-x64.gz
+      chmod +x tree-sitter-linux-x64
+      mv tree-sitter-linux-x64 /usr/local/bin/tree-sitter
+    creates: /usr/local/bin/tree-sitter
 
-- name: Config folder
+- name: Install luarocks
+  become: true
+  ansible.builtin.apt:
+    name: luarocks
+    install_recommends: false
+
+- name: Delete existing config
+  when: neovim_delete_existing_config | bool
   ansible.builtin.file:
-    mode: "0755"
-    path: "{{ ansible_env.HOME }}/.config/nvim"
+    path: "{{ neovim_config_folder }}"
+    state: absent
+
+- name: Check if starter config already exists
+  ansible.builtin.stat:
+    path: "{{ neovim_config_folder }}"
+  register: _neovim_starter_config
+
+- name: Clone lazyvim
+  when: not _neovim_starter_config.stat.exists
+  ansible.builtin.git:
+    clone: true
+    depth: 1
+    dest: "{{ neovim_config_folder }}"
+    repo: https://github.com/LazyVim/starter
+    single_branch: true
+    update: true
+    version: main
+
+- name: Create plugin-after directory
+  ansible.builtin.file:
+    path: "{{ neovim_config_folder }}/plugin/after"
     state: directory
+    mode: "0755"
 
-- name: Copy init.lua
+- name: Make everything match the terminal transparency
   ansible.builtin.copy:
-    dest: "{{ ansible_env.HOME }}/.config/nvim/init.lua"
-    src: "init.lua"
+    src: transparency.lua
+    dest: "{{ neovim_config_folder }}/plugin/after/"
+    mode: "0644"
 
-- name: Copy modules
+- name: Turn off animated scrolling
   ansible.builtin.copy:
-    dest: "{{ ansible_env.HOME }}/.config/nvim/lua"
-    src: "lua/"
+    src: snacks-animated-scrolling-off.lua
+    dest: "{{ neovim_config_folder }}/lua/plugins/"
+    mode: "0644"
+
+- name: Turn off relative line numbers
+  ansible.builtin.lineinfile:
+    path: "{{ neovim_config_folder }}/lua/config/options.lua"
+    search_string: vim.opt.relativenumber = false
+    line: vim.opt.relativenumber = false
+
+- name: Ensure editor.neo-tree is used by default
+  ansible.builtin.copy:
+    src: lazyvim.json
+    dest: "{{ neovim_config_folder }}/"
+    mode: "0644"
+
+- name: Create desktop launcher file
+  ansible.builtin.template:
+    src: neovim.desktop
+    dest: "{{ ansible_env.HOME }}/.local/share/applications/Neovim.desktop"
+    mode: "0644"

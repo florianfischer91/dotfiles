@@ -3,15 +3,75 @@ theme_selected_theme: everforest
 
 theme_packages: "{{ theme_lookup[theme_selected_theme].packages }}"
 theme_color_desktop: "{{ theme_lookup[theme_selected_theme].desktop_color }}"
+theme_icons_desktop: "{{ theme_lookup[theme_selected_theme].desktop_icons }}"
+theme_light_mode: "{{ theme_lookup[theme_selected_theme].get('mode', 'dark') }}"
 theme_tophat_meter: "{{ theme_lookup[theme_selected_theme].tophat_meter }}"
 theme_vscode: "{{ theme_lookup[theme_selected_theme].vscode }}"
 theme_vsc_extension: "{{ theme_lookup[theme_selected_theme].vscode_extension }}"
 _theme_background_path: "{{ ansible_env.HOME }}/.local/share/backgrounds/{{ theme_selected_theme }}-background.jpg"
 
 theme_lookup:
+  catppuccin:
+    desktop_color: purple
+    desktop_icons: purple
+    tophat_meter: "#e920a3"
+    vscode: "Catppuccin Macchiato"
+    vscode_extension: "Catppuccin.catppuccin-vsc"
+    packages: [yaru-theme-icon]
   everforest:
     desktop_color: bark
+    desktop_icons: bark
     tophat_meter: "#78ab50"
     vscode: "Everforest Dark"
     vscode_extension: "sainnhe.everforest"
+    packages: [yaru-theme-icon]
+  gruvbox:
+    desktop_color: olive
+    desktop_icons: olive
+    tophat_meter: "#78ab50"
+    vscode: "Gruvbox Dark Medium"
+    vscode_extension: "jdinhlife.gruvbox"
+    packages: [yaru-theme-icon]
+  matte-black:
+    desktop_color: red
+    desktop_icons: red
+    tophat_meter: "#1e1e1e"
+    vscode: "Matte Black Theme"
+    vscode_extension: "CleanThemes.matte-black-theme"
+    packages: [yaru-theme-icon]
+  nord:
+    desktop_color: blue
+    desktop_icons: blue
+    tophat_meter: "#208fe9"
+    vscode: "Nord"
+    vscode_extension: "arcticicestudio.nord-visual-studio-code"
+    packages: [yaru-theme-icon]
+  forest:
+    desktop_color: sage
+    desktop_icons: sage
+    tophat_meter: "#214237"
+    vscode: "Dark Green Jungle"
+    vscode_extension: "moondevaa.darkgreenjungle"
+    packages: [yaru-theme-icon]
+  ristretto:
+    desktop_color: yellow
+    desktop_icons: yellow
+    tophat_meter: "#1e66f5"
+    vscode: "Monokai Pro (Filter Ristretto)"
+    vscode_extension: "monokai.theme-monokai-pro-vscode"
+    packages: [yaru-theme-icon]
+  rose-pine:
+    desktop_color: blue
+    desktop_icons: blue
+    tophat_meter: "#e92020"
+    vscode: "Rosé Pine Dawn"
+    vscode_extension: "mvllow.rose-pine"
+    packages: [yaru-theme-icon]
+    mode: light
+  tokyo-night:
+    desktop_color: blue
+    desktop_icons: magenta
+    tophat_meter: "#33ccff"
+    vscode: "Tokyo Night"
+    vscode_extension: "enkia.tokyo-night"
     packages: [yaru-theme-icon]
