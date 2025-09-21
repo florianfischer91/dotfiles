@@ -65,6 +65,15 @@
     value: /usr/local/bin/git-credential-manager
     add_mode: add
 
+- name: Set additional config values
+  community.general.git_config:
+    name: "{{ item.name }}"
+    scope: "{{ item.scope | default('global') }}"
+    value: "{{ item.value }}"
+    add_mode: "{{ item.add_mode | default('replace-all') }}"
+    state: "{{ item.state | default('present') }}"
+  loop: "{{ git_additional_config }}"
+
 - name: Set user.email
   community.general.git_config:
     name: user.email
