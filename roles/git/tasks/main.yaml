@@ -45,7 +45,7 @@
       value: checkout
     - name: alias.br
       value: branch
-    - name: alias.commit
+    - name: alias.ci
       value: commit
     - name: alias.st
       value: status
