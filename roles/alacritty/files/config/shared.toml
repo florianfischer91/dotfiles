@@ -12,7 +12,7 @@ args = [
 ]
 
 [window]
-padding.x = 16
+padding.x = 14
 padding.y = 14
 decorations = "None"
 opacity = 0.98
