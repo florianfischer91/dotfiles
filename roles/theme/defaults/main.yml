@@ -50,8 +50,8 @@ theme_lookup:
     desktop_color: sage
     desktop_icons: sage
     tophat_meter: "#214237"
-    vscode: "Dark Green Jungle"
-    vscode_extension: "moondevaa.darkgreenjungle"
+    vscode: "Ocean Green: Dark"
+    vscode_extension: "jovejonovski.ocean-green"
     packages: [yaru-theme-icon]
   ristretto:
     desktop_color: yellow
