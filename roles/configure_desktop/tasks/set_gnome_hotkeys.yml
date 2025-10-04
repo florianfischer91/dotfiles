@@ -82,7 +82,14 @@
       '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom3/',
       '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom4/',
       '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom5/',
-      '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom6/']
+      '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom6/',
+      '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom7/',
+      '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom8/',
+      '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom9/',
+      '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom10/',
+      '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom11/',
+      '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom12/'  
+      ]
 
 - name: Set input source
   community.general.dconf:
@@ -109,7 +116,7 @@
 
 - name: Start a new VS Code window (rather than just switch to the already open one)
   community.general.dconf:
-    key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom4/{{ item.key }}"
+    key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2/{{ item.key }}"
     value: "{{ item.value }}"
   loop:
     - { key: "name", value: "'New VS Code Window'" }
@@ -119,7 +126,7 @@
 
 - name: Start a new alacritty window (rather than just switch to the already open one)
   community.general.dconf:
-    key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2/{{ item.key }}"
+    key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom3/{{ item.key }}"
     value: "{{ item.value }}"
   loop:
     - { key: "name", value: "'New Alacritty Window'" }
@@ -128,9 +135,18 @@
 
 - name: Start a new Chrome window (rather than just switch to the already open one)
   community.general.dconf:
-    key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom3/{{ item.key }}"
+    key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom4/{{ item.key }}"
     value: "{{ item.value }}"
   loop:
     - { key: "name", value: "'New Chrome Window'" }
     - { key: "command", value: "'chromium --new-window'" }
     - { key: "binding", value: "'<Shift><Alt>1'" }
+
+- name: Open gnome-calculator
+  community.general.dconf:
+    key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom5/{{ item.key }}"
+    value: "{{ item.value }}"
+  loop:
+    - { key: "name", value: "'Open gnome-calculator'" }
+    - { key: "command", value: "'gnome-calculator -m programming'" }
+    - { key: "binding", value: "'<Control>m'" }
