@@ -1,0 +1,29 @@
+---
+# Ensure git settings live under ~/.config
+- name: Create git config folder
+  ansible.builtin.file:
+    path: "{{ ansible_env.HOME }}/.config/git"
+    state: directory
+
+- name: Check if ~/.gitconfig exists
+  ansible.builtin.stat:
+    path: "{{ ansible_env.HOME }}/.gitconfig"
+  register: git_config_result
+
+- name: Move ~/.gitconfig to git config folder
+  when: git_config_result.stat.exists
+  ansible.builtin.copy:
+    src: "{{ ansible_env.HOME }}/.gitconfig"
+    dest: "{{ ansible_env.HOME }}/.config/git/config"
+    remote_src: true
+
+- name: Move ~/.gitconfig to git config folder
+  when: not git_config_result.stat.exists
+  ansible.builtin.file:
+    path: "{{ ansible_env.HOME }}/.config/git/config"
+    state: touch
+
+- name: Delete ~/.gitconfig
+  ansible.builtin.file:
+    path: "{{ ansible_env.HOME }}/.gitconfig"
+    state: absent

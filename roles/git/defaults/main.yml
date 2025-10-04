@@ -1,3 +1,4 @@
 ---
 git_cred_manager_uri: https://github.com/git-ecosystem/git-credential-manager/releases/download/v2.6.1/gcm-linux_amd64.2.6.1.deb
 git_additional_config: []
+git_use_config_folder: true

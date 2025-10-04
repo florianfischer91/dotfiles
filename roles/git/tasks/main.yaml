@@ -1,4 +1,8 @@
 ---
+- name: Migrate to ~/.config/git
+  ansible.builtin.import_tasks: use_config_folder.yaml
+  when: git_use_config_folder | bool
+
 - name: Install
   ansible.builtin.package:
     name:
