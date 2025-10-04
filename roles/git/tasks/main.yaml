@@ -50,7 +50,7 @@
     - name: alias.st
       value: status
 
-# Not sure what is the best git-credential-maanger or caching the credentials for 1h...
+# Not sure what is the best git-credential-manager or caching the credentials for 1h...
 - name: Set credential timeout
   community.general.git_config:
     name: credential.helper

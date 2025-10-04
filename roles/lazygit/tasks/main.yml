@@ -6,6 +6,10 @@
     dest: /usr/local/bin
     remote_src: true
     mode: '0755'
+    owner: root
+    group: root
+    include:
+      - lazygit
 
 - name: Create config directory
   ansible.builtin.file:

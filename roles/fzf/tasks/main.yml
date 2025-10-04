@@ -3,5 +3,7 @@
   ansible.builtin.unarchive:
     src: https://github.com/junegunn/fzf/releases/download/v{{ fzf_version }}/fzf-{{ fzf_version }}-linux_amd64.tar.gz
     dest: /usr/local/bin
+    owner: root
+    group: root
     mode: '0755'
     remote_src: true
